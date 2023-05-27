@@ -3,6 +3,7 @@ import { BaseDiscordEvent } from '.'
 import { Logger } from '@book000/node-utils'
 import { WatchGuildServer } from '@/server'
 import { mentionEmoji } from '@/utils'
+import { ListEmojis } from '@/list-emojis'
 
 export class DiscordEmojiCreateEvent extends BaseDiscordEvent {
   get eventName(): keyof ClientEvents {
@@ -45,5 +46,7 @@ export class DiscordEmojiCreateEvent extends BaseDiscordEvent {
         },
       ],
     })
+
+    await new ListEmojis(this.discord).generate(guild)
   }
 }

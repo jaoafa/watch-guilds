@@ -55,35 +55,6 @@ export class UnregisterCommand implements BaseCommand {
     }
 
     const guild = interaction.guild
-    const botMember = guild.members.resolve(interaction.client.user)
-    if (!botMember) {
-      await interaction.editReply({
-        embeds: [
-          {
-            title: '❌ 登録解除に失敗',
-            description: 'Botのサーバメンバーを取得できませんでした。',
-            color: 0xff_00_00,
-            timestamp: new Date().toISOString(),
-          },
-        ],
-      })
-      return
-    }
-
-    if (!botMember.permissions.has('ViewAuditLog')) {
-      await interaction.editReply({
-        embeds: [
-          {
-            title: '❌ 登録解除に失敗',
-            description:
-              'このコマンドを実行するには、Botに監査ログの表示権限が必要です。',
-            color: 0xff_00_00,
-            timestamp: new Date().toISOString(),
-          },
-        ],
-      })
-      return
-    }
 
     const server = new WatchGuildServer(interaction.guild)
     server.unregister()
