@@ -44,6 +44,7 @@ export class RegenerateCommand implements BaseCommand {
             title: '❌ 絵文字一覧の再生成に失敗',
             description: 'このコマンドはDiscordサーバ内でのみ実行できます。',
             color: 0xff_00_00,
+            timestamp: new Date().toISOString(),
           },
         ],
       })
@@ -62,6 +63,7 @@ export class RegenerateCommand implements BaseCommand {
             description:
               '絵文字一覧チャンネルが設定されていません。\n`/watch-guilds set-channel list-emoji` で設定してください。',
             color: 0xff_00_00,
+            timestamp: new Date().toISOString(),
           },
         ],
       })
@@ -96,6 +98,7 @@ export class RegenerateCommand implements BaseCommand {
             description:
               '絵文字一覧チャンネルが見つからないか、Botがメッセージを送信できません。',
             color: 0xff_00_00,
+            timestamp: new Date().toISOString(),
           },
         ],
       })
@@ -109,6 +112,7 @@ export class RegenerateCommand implements BaseCommand {
           title: '⚙️ 絵文字一覧の再生成中',
           description: '絵文字一覧を再生成しています。',
           color: 0x00_00_ff,
+          timestamp: new Date().toISOString(),
         },
       ],
     })
@@ -122,6 +126,7 @@ export class RegenerateCommand implements BaseCommand {
           title: '✅ 絵文字一覧の再生成完了',
           description: '絵文字一覧を再生成しました。',
           color: 0x00_ff_00,
+          timestamp: new Date().toISOString(),
         },
       ],
     })

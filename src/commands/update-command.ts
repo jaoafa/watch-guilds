@@ -10,14 +10,14 @@ import { WatchGuildServer } from '@/server'
 import { Discord } from '@/discord'
 import { Logger } from '@book000/node-utils'
 
-export class UnregisterCommand implements BaseCommand {
+export class UpdateCommand implements BaseCommand {
   definition():
     | SlashCommandSubcommandBuilder
     | SlashCommandSubcommandGroupBuilder
     | null {
     return new SlashCommandSubcommandBuilder()
-      .setName('unregister')
-      .setDescription('このサーバの watch-guilds の対象サーバから外します。')
+      .setName('update-commands')
+      .setDescription('このサーバのコマンドを更新します。')
   }
 
   conditions(guild: BaseGuild): boolean {
@@ -26,12 +26,7 @@ export class UnregisterCommand implements BaseCommand {
   }
 
   get permissions(): Permission[] {
-    return [
-      {
-        identifier: 'Administrator',
-        type: 'PERMISSION',
-      },
-    ]
+    return []
   }
 
   async execute(
@@ -56,18 +51,12 @@ export class UnregisterCommand implements BaseCommand {
 
     const guild = interaction.guild
 
-    const server = new WatchGuildServer(interaction.guild)
-    server.unregister()
-
     logger.info(`✅ Unregistered guild: ${guild.name} (${guild.id})`)
     await interaction.editReply({
       embeds: [
         {
-          title: '⏩ 登録解除に成功',
-          description: 'このサーバをwatch-guildsの対象サーバから外しました。',
-          footer: {
-            text: 'コマンドの再登録を行っています…',
-          },
+          title: '⏩ コマンド更新中…',
+          description: 'コマンドの再登録を行っています。',
           color: 0xff_a5_00,
           timestamp: new Date().toISOString(),
         },
@@ -79,11 +68,8 @@ export class UnregisterCommand implements BaseCommand {
     await interaction.editReply({
       embeds: [
         {
-          title: '✅ 登録解除に成功',
-          description: 'このサーバをwatch-guildsの対象サーバから外しました。',
-          footer: {
-            text: 'コマンドの再登録が完了しました',
-          },
+          title: '✅ コマンド更新完了',
+          description: 'コマンドの再登録が完了しました。',
           color: 0x00_ff_00,
           timestamp: new Date().toISOString(),
         },

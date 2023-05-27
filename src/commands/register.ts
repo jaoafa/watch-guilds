@@ -91,12 +91,13 @@ export class RegisterCommand implements BaseCommand {
     await interaction.editReply({
       embeds: [
         {
-          title: '✅ 登録に成功',
-          description: 'このサーバを watch-guilds の対象サーバに設定しました。',
+          title: '⏩ 登録に成功',
+          description:
+            'このサーバをwatch-guildsの対象サーバに設定しました。\n絵文字などの変更通知機能等を利用するには、さらにチャンネルの設定が必要です。',
           footer: {
-            text: '絵文字などの変更通知機能等を利用するには、さらにチャンネルの設定が必要です。',
+            text: 'コマンドの再登録を行っています…',
           },
-          color: 0x00_ff_00,
+          color: 0xff_a5_00,
           timestamp: new Date().toISOString(),
         },
       ],
@@ -104,5 +105,20 @@ export class RegisterCommand implements BaseCommand {
     logger.info(`✅ Registered guild: ${guild.name} (${guild.id})`)
 
     await discord.updateCommands(guild)
+
+    await interaction.editReply({
+      embeds: [
+        {
+          title: '✅ 登録に成功',
+          description:
+            'このサーバを watch-guilds の対象サーバに設定しました。\n絵文字などの変更通知機能等を利用するには、さらにチャンネルの設定が必要です。',
+          footer: {
+            text: 'コマンドの再登録が完了しました',
+          },
+          color: 0x00_ff_00,
+          timestamp: new Date().toISOString(),
+        },
+      ],
+    })
   }
 }

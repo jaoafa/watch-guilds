@@ -65,6 +65,7 @@ export class RemoveChannelCommand implements BaseCommand {
             title: '❌ 設定に失敗',
             description: 'このコマンドはDiscordサーバ内でのみ実行できます。',
             color: 0xff_00_00,
+            timestamp: new Date().toISOString(),
           },
         ],
       })
@@ -78,8 +79,9 @@ export class RemoveChannelCommand implements BaseCommand {
           {
             title: '❌ 設定に失敗',
             description:
-              'このサーバは watch-guilds の対象サーバではありません。まずは /watch-guilds register を実行してください。',
+              'このサーバは watch-guilds の対象サーバではありません。まずは `/watch-guilds register` を実行してください。',
             color: 0xff_00_00,
+            timestamp: new Date().toISOString(),
           },
         ],
       })
@@ -94,6 +96,7 @@ export class RemoveChannelCommand implements BaseCommand {
             title: '❌ 設定に失敗',
             description: '不正なチャンネルタイプです。',
             color: 0xff_00_00,
+            timestamp: new Date().toISOString(),
           },
         ],
       })
@@ -110,6 +113,7 @@ export class RemoveChannelCommand implements BaseCommand {
             title: '❌ 設定に失敗',
             description: 'このチャンネルは設定されていません。',
             color: 0xff_00_00,
+            timestamp: new Date().toISOString(),
           },
         ],
       })
@@ -124,6 +128,7 @@ export class RemoveChannelCommand implements BaseCommand {
             title: '❌ 設定に失敗',
             description: 'チャンネルの設定解除に失敗しました。',
             color: 0xff_00_00,
+            timestamp: new Date().toISOString(),
           },
         ],
       })
@@ -134,13 +139,32 @@ export class RemoveChannelCommand implements BaseCommand {
     await interaction.editReply({
       embeds: [
         {
-          title: '✅ 設定に成功',
+          title: '⏩ 設定に成功',
           description: `${type} のチャンネルの設定を解除しました。`,
-          color: 0x00_ff_00,
+          footer: {
+            text: 'コマンドの再登録を行っています…',
+          },
+          color: 0xff_a5_00,
+          timestamp: new Date().toISOString(),
         },
       ],
     })
+
     await discord.updateCommands(interaction.guild)
+
+    await interaction.editReply({
+      embeds: [
+        {
+          title: '✅ 設定に成功',
+          description: `${type} のチャンネルの設定を解除しました。`,
+          footer: {
+            text: 'コマンドの再登録が完了しました',
+          },
+          color: 0x00_ff_00,
+          timestamp: new Date().toISOString(),
+        },
+      ],
+    })
   }
 
   isWGChannelType(type: string): type is WGChannelType {

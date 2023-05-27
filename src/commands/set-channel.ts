@@ -77,6 +77,7 @@ export class SetChannelCommand implements BaseCommand {
             title: '❌ 設定に失敗',
             description: 'このコマンドはDiscordサーバ内でのみ実行できます。',
             color: 0xff_00_00,
+            timestamp: new Date().toISOString(),
           },
         ],
       })
@@ -90,8 +91,9 @@ export class SetChannelCommand implements BaseCommand {
           {
             title: '❌ 設定に失敗',
             description:
-              'このサーバは watch-guilds の対象サーバではありません。まずは /watch-guilds register を実行してください。',
+              'このサーバは watch-guilds の対象サーバではありません。まずは `/watch-guilds register` を実行してください。',
             color: 0xff_00_00,
+            timestamp: new Date().toISOString(),
           },
         ],
       })
@@ -106,6 +108,7 @@ export class SetChannelCommand implements BaseCommand {
             title: '❌ 設定に失敗',
             description: '不正なチャンネルタイプです。',
             color: 0xff_00_00,
+            timestamp: new Date().toISOString(),
           },
         ],
       })
@@ -124,6 +127,7 @@ export class SetChannelCommand implements BaseCommand {
             description:
               'このチャンネルはこのサーバのチャンネルではありません。',
             color: 0xff_00_00,
+            timestamp: new Date().toISOString(),
           },
         ],
       })
@@ -138,6 +142,7 @@ export class SetChannelCommand implements BaseCommand {
             title: '❌ 登録に失敗',
             description: 'このコマンドはDiscordサーバ内でのみ実行できます。',
             color: 0xff_00_00,
+            timestamp: new Date().toISOString(),
           },
         ],
       })
@@ -165,6 +170,7 @@ export class SetChannelCommand implements BaseCommand {
             description:
               'Botには指定されたチャンネルにメッセージを送信する権限がありません。',
             color: 0xff_00_00,
+            timestamp: new Date().toISOString(),
           },
         ],
       })
@@ -179,6 +185,7 @@ export class SetChannelCommand implements BaseCommand {
             title: '❌ 設定に失敗',
             description: 'チャンネルの設定に失敗しました。',
             color: 0xff_00_00,
+            timestamp: new Date().toISOString(),
           },
         ],
       })
@@ -191,13 +198,32 @@ export class SetChannelCommand implements BaseCommand {
     await interaction.editReply({
       embeds: [
         {
-          title: '✅ 設定に成功',
+          title: '⏩ 設定に成功',
           description: `<#${targetChannel.id}> を ${channelType} のチャンネルとして設定しました。`,
-          color: 0x00_ff_00,
+          footer: {
+            text: 'コマンドの再登録を行っています…',
+          },
+          color: 0xff_a5_00,
+          timestamp: new Date().toISOString(),
         },
       ],
     })
+
     await discord.updateCommands(guild)
+
+    await interaction.editReply({
+      embeds: [
+        {
+          title: '✅ 設定に成功',
+          description: `<#${targetChannel.id}> を ${channelType} のチャンネルとして設定しました。`,
+          footer: {
+            text: 'コマンドの再登録が完了しました',
+          },
+          color: 0x00_ff_00,
+          timestamp: new Date().toISOString(),
+        },
+      ],
+    })
   }
 
   isWGChannelType(type: string): type is WGChannelType {
