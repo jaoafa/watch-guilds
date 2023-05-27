@@ -71,6 +71,6 @@ export class UnregisterCommand implements BaseCommand {
     })
     logger.info(`✅ Unregistered guild: ${guild.name} (${guild.id})`)
 
-    await discord.updateCommands()
+    await discord.updateCommands(guild)
   }
 }
