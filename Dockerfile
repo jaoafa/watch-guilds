@@ -30,7 +30,8 @@ COPY --from=builder /app/output .
 
 ENV NODE_ENV production
 ENV CONFIG_PATH /data/config.json
-ENV BASE_SERVER_DIR /data/servers
+ENV BASE_SERVER_DIR /data/servers/
+ENV BASE_EMOJI_LISTS_DIR /data/emoji-lists/
 
 VOLUME [ "/data" ]
 

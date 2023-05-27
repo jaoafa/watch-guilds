@@ -4,6 +4,7 @@ import { mentionEmoji } from './utils'
 import fs from 'node:fs'
 import { WatchGuildServer } from './server'
 import { Logger } from '@book000/node-utils'
+import natsort from 'natsort'
 
 export class ListEmojis {
   private readonly discord: Discord
@@ -152,12 +153,13 @@ export class ListEmojis {
 
   private async getEmojis(guild: Guild) {
     const emojis = await guild.emojis.fetch()
+    const sorter = natsort()
     return emojis
       .sort((a, b) => {
         if (!a.name) return 0
         if (!b.name) return 0
 
-        return a.name.localeCompare(b.name)
+        return sorter(a.name, b.name)
       })
       .map((emoji) => {
         return `${mentionEmoji(emoji)} = \`${emoji.name}\``
