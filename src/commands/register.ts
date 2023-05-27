@@ -4,6 +4,7 @@ import {
   ChatInputCommandInteraction,
   BaseGuild,
   SlashCommandSubcommandGroupBuilder,
+  PermissionResolvable,
 } from 'discord.js'
 import { BaseCommand, Permission } from '.'
 import { WatchGuildServer } from '@/server'
@@ -28,7 +29,7 @@ export class RegisterCommand implements BaseCommand {
   get permissions(): Permission[] {
     return [
       {
-        identifier: 'Administrator',
+        identifier: 'ManageGuild',
         type: 'PERMISSION',
       },
     ]
@@ -70,19 +71,25 @@ export class RegisterCommand implements BaseCommand {
       return
     }
 
-    if (!botMember.permissions.has('ViewAuditLog')) {
-      await interaction.editReply({
-        embeds: [
-          {
-            title: '❌ 登録に失敗',
-            description:
-              'このコマンドを実行するには、Botに監査ログの表示権限が必要です。',
-            color: 0xff_00_00,
-            timestamp: new Date().toISOString(),
-          },
-        ],
-      })
-      return
+    const needPerms = {
+      ViewAuditLog: '監査ログの表示',
+      ManageEmojisAndStickers: '絵文字の管理',
+    }
+
+    for (const [perm, permText] of Object.entries(needPerms)) {
+      if (!botMember.permissions.has(perm as PermissionResolvable)) {
+        await interaction.editReply({
+          embeds: [
+            {
+              title: '❌ 登録に失敗',
+              description: `このコマンドを実行するには、Botに${permText}権限が必要です。`,
+              color: 0xff_00_00,
+              timestamp: new Date().toISOString(),
+            },
+          ],
+        })
+        return
+      }
     }
 
     const server = new WatchGuildServer(interaction.guild)

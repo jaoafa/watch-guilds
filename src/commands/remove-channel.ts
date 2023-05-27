@@ -46,7 +46,7 @@ export class RemoveChannelCommand implements BaseCommand {
   get permissions(): Permission[] {
     return [
       {
-        identifier: 'Administrator',
+        identifier: 'ManageGuild',
         type: 'PERMISSION',
       },
     ]

@@ -28,7 +28,7 @@ export class UnregisterCommand implements BaseCommand {
   get permissions(): Permission[] {
     return [
       {
-        identifier: 'Administrator',
+        identifier: 'ManageGuild',
         type: 'PERMISSION',
       },
     ]
