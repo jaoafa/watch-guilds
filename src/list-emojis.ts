@@ -152,9 +152,16 @@ export class ListEmojis {
 
   private async getEmojis(guild: Guild) {
     const emojis = await guild.emojis.fetch()
-    return emojis.map((emoji) => {
-      return `${mentionEmoji(emoji)} = \`${emoji.name}\``
-    })
+    return emojis
+      .sort((a, b) => {
+        if (!a.name) return 0
+        if (!b.name) return 0
+
+        return b.name.length - a.name.length || a.name.localeCompare(b.name)
+      })
+      .map((emoji) => {
+        return `${mentionEmoji(emoji)} = \`${emoji.name}\``
+      })
   }
 
   private splitText(texts: string[], limit: number) {
