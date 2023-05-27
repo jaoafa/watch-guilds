@@ -157,7 +157,7 @@ export class ListEmojis {
         if (!a.name) return 0
         if (!b.name) return 0
 
-        return b.name.length - a.name.length || a.name.localeCompare(b.name)
+        return a.name.localeCompare(b.name)
       })
       .map((emoji) => {
         return `${mentionEmoji(emoji)} = \`${emoji.name}\``
