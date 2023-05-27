@@ -5,6 +5,7 @@ import {
   ChatInputCommandInteraction,
   BaseGuild,
   SlashCommandSubcommandGroupBuilder,
+  PermissionResolvable,
 } from 'discord.js'
 import { BaseCommand, Permission } from '.'
 import { WatchGuildServer, wgChannelTypes, WGChannelType } from '@/server'
@@ -57,7 +58,7 @@ export class SetChannelCommand implements BaseCommand {
   get permissions(): Permission[] {
     return [
       {
-        identifier: 'Administrator',
+        identifier: 'ManageGuild',
         type: 'PERMISSION',
       },
     ]
@@ -162,19 +163,32 @@ export class SetChannelCommand implements BaseCommand {
       })
       return
     }
-    if (!targetChannel.permissionsFor(botMember).has('SendMessages')) {
-      await interaction.editReply({
-        embeds: [
-          {
-            title: '❌ 設定に失敗',
-            description:
-              'Botには指定されたチャンネルにメッセージを送信する権限がありません。',
-            color: 0xff_00_00,
-            timestamp: new Date().toISOString(),
-          },
-        ],
-      })
-      return
+
+    const needPerms = {
+      ViewChannel: '閲覧',
+      SendMessages: 'メッセージ送信',
+      EmbedLinks: '埋め込みリンク',
+      ReadMessageHistory: 'メッセージ履歴の閲覧',
+    }
+
+    for (const [perm, permText] of Object.entries(needPerms)) {
+      if (
+        !targetChannel
+          .permissionsFor(botMember)
+          .has(perm as PermissionResolvable)
+      ) {
+        await interaction.editReply({
+          embeds: [
+            {
+              title: '❌ 設定に失敗',
+              description: `Botには、指定されたチャンネルの${permText}権限がありません。`,
+              color: 0xff_00_00,
+              timestamp: new Date().toISOString(),
+            },
+          ],
+        })
+        return
+      }
     }
 
     const channel = server.setChannel(channelType, targetChannel)
