@@ -140,7 +140,7 @@ export class RemoveChannelCommand implements BaseCommand {
         },
       ],
     })
-    await discord.updateCommands()
+    await discord.updateCommands(interaction.guild)
   }
 
   isWGChannelType(type: string): type is WGChannelType {

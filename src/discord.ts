@@ -1,4 +1,5 @@
 import {
+  BaseGuild,
   BaseInteraction,
   CacheType,
   Client,
@@ -70,7 +71,7 @@ export class Discord {
     const logger = Logger.configure('Discord.onReady')
     logger.info(`👌 ready: ${this.client.user?.tag}`)
 
-    await this.updateCommands()
+    await this.updateAllGuildCommands()
 
     // 1時間ごとに interactionCreate を再登録する
     setInterval(() => {
@@ -79,7 +80,7 @@ export class Discord {
       this.client.off('interactionCreate', this.onInteractionCreate.bind(this))
       this.client.on('interactionCreate', this.onInteractionCreate.bind(this))
 
-      this.updateCommands()
+      this.updateAllGuildCommands()
     }, 1000 * 60 * 60)
   }
 
@@ -141,43 +142,48 @@ export class Discord {
     await command.execute(this, interaction)
   }
 
-  async updateCommands() {
-    const logger = Logger.configure('Discord.updateCommands')
+  async updateAllGuildCommands() {
+    const logger = Logger.configure('Discord.updateAllGuildCommands')
     logger.info('🔄 Updating commands')
 
     const guilds = await this.client.guilds.fetch()
     for (const guild of guilds.values()) {
-      logger.info(`🖥️ Guild: ${guild.name} (${guild.id})`)
-
-      if (!this.client.application) {
-        throw new Error('Client#Application is not found.')
-      }
-
-      const builder = new SlashCommandBuilder()
-        .setName('watch-guilds')
-        .setDescription('watch-guilds commands')
-
-      for (const route in Discord.routes) {
-        if (!Discord.routes[route].conditions(guild)) {
-          continue
-        }
-        const definition = Discord.routes[route].definition(guild)
-        if (!definition) {
-          continue
-        }
-        logger.info('🖥️ SubCommand: ' + definition.name)
-        if (definition instanceof SlashCommandSubcommandBuilder) {
-          builder.addSubcommand(definition)
-        }
-        if (definition instanceof SlashCommandSubcommandGroupBuilder) {
-          builder.addSubcommandGroup(definition)
-        }
-      }
-
-      await this.client.application.commands.set([builder.toJSON()], guild.id)
+      await this.updateCommands(guild)
     }
 
     logger.info('👌 Commands updated')
+  }
+
+  async updateCommands(guild: BaseGuild) {
+    const logger = Logger.configure('Discord.updateCommands')
+    logger.info(`🖥️ Guild: ${guild.name} (${guild.id})`)
+
+    if (!this.client.application) {
+      throw new Error('Client#Application is not found.')
+    }
+
+    const builder = new SlashCommandBuilder()
+      .setName('watch-guilds')
+      .setDescription('watch-guilds commands')
+
+    for (const route in Discord.routes) {
+      if (!Discord.routes[route].conditions(guild)) {
+        continue
+      }
+      const definition = Discord.routes[route].definition(guild)
+      if (!definition) {
+        continue
+      }
+      logger.info('🖥️ SubCommand: ' + definition.name)
+      if (definition instanceof SlashCommandSubcommandBuilder) {
+        builder.addSubcommand(definition)
+      }
+      if (definition instanceof SlashCommandSubcommandGroupBuilder) {
+        builder.addSubcommandGroup(definition)
+      }
+    }
+
+    await this.client.application.commands.set([builder.toJSON()], guild.id)
   }
 
   waitReady() {

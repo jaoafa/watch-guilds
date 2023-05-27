@@ -197,7 +197,7 @@ export class SetChannelCommand implements BaseCommand {
         },
       ],
     })
-    await discord.updateCommands()
+    await discord.updateCommands(guild)
   }
 
   isWGChannelType(type: string): type is WGChannelType {

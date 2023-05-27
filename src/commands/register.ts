@@ -103,6 +103,6 @@ export class RegisterCommand implements BaseCommand {
     })
     logger.info(`✅ Registered guild: ${guild.name} (${guild.id})`)
 
-    await discord.updateCommands()
+    await discord.updateCommands(guild)
   }
 }
