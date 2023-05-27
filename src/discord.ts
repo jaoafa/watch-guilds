@@ -21,6 +21,7 @@ import { DiscordEmojiDeleteEvent } from './events/emoji-delete'
 import { DiscordStickerCreateEvent } from './events/sticker-create'
 import { DiscordStickerUpdateEvent } from './events/sticker-update'
 import { DiscordStickerDeleteEvent } from './events/sticker-delete'
+import { RegenerateCommand } from './commands/regenerate'
 
 export class Discord {
   public readonly client: Client
@@ -30,6 +31,7 @@ export class Discord {
     new UnregisterCommand(),
     new SetChannelCommand(),
     new RemoveChannelCommand(),
+    new RegenerateCommand(),
   ]
 
   constructor(config: WGConfiguration) {

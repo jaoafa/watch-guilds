@@ -22,7 +22,9 @@ export class WatchGuildServer {
   constructor(guild: BaseGuild) {
     this.guild = guild
 
-    const baseServerDirectory = './data/servers/'
+    const baseServerDirectory = process.env.BASE_SERVER_DIR
+      ? `${process.env.BASE_SERVER_DIR}/`
+      : './data/servers/'
     if (!fs.existsSync(baseServerDirectory)) {
       fs.mkdirSync(baseServerDirectory, { recursive: true })
     }

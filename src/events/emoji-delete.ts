@@ -2,6 +2,7 @@ import { AuditLogEvent, ClientEvents, GuildEmoji, User } from 'discord.js'
 import { BaseDiscordEvent } from '.'
 import { Logger } from '@book000/node-utils'
 import { WatchGuildServer } from '@/server'
+import { ListEmojis } from '@/list-emojis'
 
 export class DiscordEmojiDeleteEvent extends BaseDiscordEvent {
   get eventName(): keyof ClientEvents {
@@ -47,6 +48,8 @@ export class DiscordEmojiDeleteEvent extends BaseDiscordEvent {
         },
       ],
     })
+
+    await new ListEmojis(this.discord).generate(guild)
   }
 
   async getDeletedBy(emoji: GuildEmoji): Promise<User | null> {
