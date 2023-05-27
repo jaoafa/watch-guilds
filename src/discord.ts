@@ -23,6 +23,7 @@ import { DiscordStickerCreateEvent } from './events/sticker-create'
 import { DiscordStickerUpdateEvent } from './events/sticker-update'
 import { DiscordStickerDeleteEvent } from './events/sticker-delete'
 import { RegenerateCommand } from './commands/regenerate'
+import { UpdateCommand } from './commands/update-command'
 
 export class Discord {
   public readonly client: Client
@@ -33,6 +34,7 @@ export class Discord {
     new SetChannelCommand(),
     new RemoveChannelCommand(),
     new RegenerateCommand(),
+    new UpdateCommand(),
   ]
 
   constructor(config: WGConfiguration) {
