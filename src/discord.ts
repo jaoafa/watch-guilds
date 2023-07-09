@@ -24,6 +24,7 @@ import { DiscordStickerUpdateEvent } from './events/sticker-update'
 import { DiscordStickerDeleteEvent } from './events/sticker-delete'
 import { RegenerateCommand } from './commands/regenerate'
 import { UpdateCommand } from './commands/update-command'
+import { DiscordGuildCreateEvent } from './events/guild-create'
 
 export class Discord {
   public readonly client: Client
@@ -45,6 +46,7 @@ export class Discord {
 
     const events: BaseDiscordEvent[] = [
       new DiscordInteractionCreateEvent(this),
+      new DiscordGuildCreateEvent(this),
       new DiscordEmojiCreateEvent(this),
       new DiscordEmojiUpdateEvent(this),
       new DiscordEmojiDeleteEvent(this),
