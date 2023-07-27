@@ -50,6 +50,9 @@ export class EmojisCache {
 
     const guildId = guild.id
     const path = this.getFilePath(guildId)
+    if (!fs.existsSync(this.baseServerDirectory)) {
+      fs.mkdirSync(this.baseServerDirectory)
+    }
     fs.writeFileSync(path, JSON.stringify(emojis))
   }
 
