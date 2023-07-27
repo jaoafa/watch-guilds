@@ -4,6 +4,8 @@ import { WGConfiguration } from './config'
 
 async function main() {
   const logger = Logger.configure('main')
+  logger.info('🚀 Starting...')
+
   const config = new WGConfiguration('data/config.json')
   config.load()
   if (!config.validate()) {
