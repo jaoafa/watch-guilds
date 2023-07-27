@@ -25,6 +25,7 @@ import { DiscordStickerDeleteEvent } from './events/sticker-delete'
 import { RegenerateCommand } from './commands/regenerate'
 import { UpdateCommand } from './commands/update-command'
 import { DiscordGuildCreateEvent } from './events/guild-create'
+import { EmojisCache } from './emojis-caches'
 
 export class Discord {
   public readonly client: Client
@@ -76,6 +77,7 @@ export class Discord {
     logger.info(`👌 ready: ${this.client.user?.tag}`)
 
     await this.updateAllGuildCommands()
+    await this.fetchAllGuildEmojis()
 
     // 1時間ごとに interactionCreate を再登録する
     setInterval(() => {
@@ -144,6 +146,18 @@ export class Discord {
       }
     }
     await command.execute(this, interaction)
+  }
+
+  async fetchAllGuildEmojis() {
+    const logger = Logger.configure('Discord.fetchAllGuildEmojis')
+    logger.info('🔄 Fetching emojis')
+
+    const guilds = await this.client.guilds.fetch()
+    for (const guild of guilds.values()) {
+      await EmojisCache.refresh(await guild.fetch())
+    }
+
+    logger.info('👌 Emojis fetched')
   }
 
   async updateAllGuildCommands() {
