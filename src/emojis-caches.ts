@@ -19,6 +19,11 @@ export interface Emoji {
   animated: boolean
 }
 
+export interface EmojisCacheFile {
+  guild: Guild
+  emojis: Emoji[]
+}
+
 export type EmojisWithGuild = Emoji & {
   guild: Guild
 }
@@ -32,20 +37,25 @@ export class EmojisCache {
     const guildIds = this.getFileGuildIds()
     const matchEmojis = []
     for (const guildId of guildIds) {
-      const emojis = this.get(guildId)
+      const guildEmoji = this.get(guildId)
+      if (!guildEmoji) {
+        continue
+      }
+      const guild = guildEmoji.guild
+      const emojis = guildEmoji.emojis
       matchEmojis.push(
         ...emojis
           .filter((emoji: Emoji) => emoji.name === emojiName)
-          .map((emoji: Emoji) => ({ ...emoji, guild: emojis.guild }))
+          .map((emoji: Emoji) => ({ ...emoji, guild }))
       )
     }
     return matchEmojis
   }
 
-  public static get(guildId: string) {
+  public static get(guildId: string): EmojisCacheFile | null {
     const path = this.getFilePath(guildId)
     if (!fs.existsSync(path)) {
-      return []
+      return null
     }
 
     return JSON.parse(fs.readFileSync(path, 'utf8'))
