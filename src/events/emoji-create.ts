@@ -34,7 +34,9 @@ export class DiscordEmojiCreateEvent extends BaseDiscordEvent {
     )
 
     const matchEmojis = EmojisCache.getFromEmojiName(emoji.name)
-    const matchEmojisMention = matchEmojis.map((e) => `<:${e.name}:${e.id}>`)
+    const matchEmojisMention = matchEmojis.map(
+      (e) => `- <:${e.name}:${e.id}>: ${e.name} (${e.guild.name})`
+    )
     const matchEmojisField = matchEmojisMention
       ? {
           name: 'Duplicate emojis',

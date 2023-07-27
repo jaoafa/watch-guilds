@@ -19,18 +19,24 @@ export interface Emoji {
   animated: boolean
 }
 
+export type EmojisWithGuild = Emoji & {
+  guild: Guild
+}
+
 export class EmojisCache {
   private static baseServerDirectory = process.env.BASE_EMOJIS_CACHE_DIR
     ? `${process.env.BASE_EMOJIS_CACHE_DIR}/`
     : './data/emojis-cache/'
 
-  public static getFromEmojiName(emojiName: string): Emoji[] {
+  public static getFromEmojiName(emojiName: string): EmojisWithGuild[] {
     const guildIds = this.getFileGuildIds()
     const matchEmojis = []
     for (const guildId of guildIds) {
       const emojis = this.get(guildId)
       matchEmojis.push(
-        ...emojis.filter((emoji: Emoji) => emoji.name === emojiName)
+        ...emojis
+          .filter((emoji: Emoji) => emoji.name === emojiName)
+          .map((emoji: Emoji) => ({ ...emoji, guild: emojis.guild }))
       )
     }
     return matchEmojis
@@ -53,7 +59,14 @@ export class EmojisCache {
     if (!fs.existsSync(this.baseServerDirectory)) {
       fs.mkdirSync(this.baseServerDirectory)
     }
-    fs.writeFileSync(path, JSON.stringify(emojis))
+
+    fs.writeFileSync(
+      path,
+      JSON.stringify({
+        guild,
+        emojis,
+      })
+    )
   }
 
   private static getFileGuildIds() {
