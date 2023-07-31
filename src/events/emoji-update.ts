@@ -4,6 +4,7 @@ import { Logger } from '@book000/node-utils'
 import { WatchGuildServer } from '@/server'
 import { mentionEmoji } from '@/utils'
 import { ListEmojis } from '@/list-emojis'
+import { EmojisCache } from '@/emojis-caches'
 
 export class DiscordEmojiUpdateEvent extends BaseDiscordEvent {
   get eventName(): keyof ClientEvents {
@@ -13,6 +14,9 @@ export class DiscordEmojiUpdateEvent extends BaseDiscordEvent {
   async execute(oldEmoji: GuildEmoji, newEmoji: GuildEmoji) {
     const logger = Logger.configure('Discord.onEmojiUpdate')
     const guild = oldEmoji.guild
+    if (!newEmoji.name) {
+      throw new Error('Emoji has no name')
+    }
 
     const server = new WatchGuildServer(guild)
     const channelId = server.getChannelId('notifier-emoji')
@@ -34,6 +38,22 @@ export class DiscordEmojiUpdateEvent extends BaseDiscordEvent {
           icon_url: updatedBy.avatarURL() ?? updatedBy.defaultAvatarURL,
         }
       : undefined
+
+    const matchEmojis = EmojisCache.getFromEmojiName(newEmoji.name)
+    const matchEmojisMention = matchEmojis.map(
+      (e) => `- <:${e.name}:${e.id}>: ${e.name} (${e.guild.name})`
+    )
+    const matchEmojisField =
+      matchEmojisMention.length > 0
+        ? {
+            name: 'Duplicate emojis',
+            value: matchEmojisMention.join('\n'),
+            inline: false,
+          }
+        : undefined
+
+    const fields = matchEmojisField ? [matchEmojisField] : []
+
     await channel.send({
       embeds: [
         {
@@ -52,6 +72,7 @@ export class DiscordEmojiUpdateEvent extends BaseDiscordEvent {
               value: `\`${newEmoji.name}\``,
               inline: true,
             },
+            ...fields,
           ],
           author,
           color: 0xff_a5_00,
