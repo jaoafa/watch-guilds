@@ -80,14 +80,20 @@ export class Discord {
     await this.fetchAllGuildEmojis()
 
     // 1時間ごとに interactionCreate を再登録する
-    setInterval(() => {
-      const logger = Logger.configure('Discord.onReady.setInterval')
-      logger.info('🔄 Re-registering interactionCreate handler')
-      this.client.off('interactionCreate', this.onInteractionCreate.bind(this))
-      this.client.on('interactionCreate', this.onInteractionCreate.bind(this))
+    setInterval(
+      () => {
+        const logger = Logger.configure('Discord.onReady.setInterval')
+        logger.info('🔄 Re-registering interactionCreate handler')
+        this.client.off(
+          'interactionCreate',
+          this.onInteractionCreate.bind(this)
+        )
+        this.client.on('interactionCreate', this.onInteractionCreate.bind(this))
 
-      this.updateAllGuildCommands()
-    }, 1000 * 60 * 60)
+        this.updateAllGuildCommands()
+      },
+      1000 * 60 * 60
+    )
   }
 
   async onInteractionCreate(interaction: BaseInteraction<CacheType>) {
