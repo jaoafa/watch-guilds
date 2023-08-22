@@ -26,6 +26,7 @@ import { RegenerateCommand } from './commands/regenerate'
 import { UpdateCommand } from './commands/update-command'
 import { DiscordGuildCreateEvent } from './events/guild-create'
 import { EmojisCache } from './emojis-caches'
+import { CheckPermissionsCommand } from './commands/check-permissions'
 
 export class Discord {
   public readonly client: Client
@@ -37,6 +38,7 @@ export class Discord {
     new RemoveChannelCommand(),
     new RegenerateCommand(),
     new UpdateCommand(),
+    new CheckPermissionsCommand(),
   ]
 
   constructor(config: WGConfiguration) {
