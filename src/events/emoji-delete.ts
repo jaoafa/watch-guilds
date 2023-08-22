@@ -15,11 +15,18 @@ export class DiscordEmojiDeleteEvent extends BaseDiscordEvent {
 
     const server = new WatchGuildServer(guild)
     const channelId = server.getChannelId('notifier-emoji')
-    if (!server.isRegistered() || channelId === null) {
+    if (!server.isRegistered()) {
+      return
+    }
+    const listGeneratorPromise = new ListEmojis(this.discord).generate(guild)
+
+    if (channelId === null) {
+      await listGeneratorPromise
       return
     }
     const channel = guild.channels.cache.get(channelId)
     if (!channel || !channel.isTextBased()) {
+      await listGeneratorPromise
       return
     }
 
@@ -49,7 +56,7 @@ export class DiscordEmojiDeleteEvent extends BaseDiscordEvent {
       ],
     })
 
-    await new ListEmojis(this.discord).generate(guild)
+    await listGeneratorPromise
   }
 
   async getDeletedBy(emoji: GuildEmoji): Promise<User | null> {
