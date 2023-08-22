@@ -75,6 +75,19 @@ export class ListEmojis {
       messageContents
     )
     this.saveListMessages(guild, newMessages)
+
+    // 不要なメッセージを削除する: messagesにはあるけど、newMessagesにはないメッセージを削除する
+    const deleteMessages = messages.filter(
+      (message) =>
+        !newMessages.some((newMessage) => newMessage?.id === message?.id)
+    )
+    await Promise.all(
+      deleteMessages.map(async (message) => {
+        if (!message) return
+        return await message.delete().catch(() => null)
+      })
+    )
+
     logger.info('📝 Generated!')
   }
 
@@ -177,6 +190,8 @@ export class ListEmojis {
       current += text + '\n'
     }
     result.push(current)
-    return result
+
+    // 空白配列を削除する
+    return result.filter((text) => text.length > 0)
   }
 }
