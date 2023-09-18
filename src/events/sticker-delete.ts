@@ -2,6 +2,7 @@ import { AuditLogEvent, ClientEvents, Sticker, User } from 'discord.js'
 import { BaseDiscordEvent } from '.'
 import { Logger } from '@book000/node-utils'
 import { WatchGuildServer } from '@/server'
+import { Discord } from '@/discord'
 
 export class DiscordStickerDeleteEvent extends BaseDiscordEvent {
   get eventName(): keyof ClientEvents {
@@ -35,6 +36,10 @@ export class DiscordStickerDeleteEvent extends BaseDiscordEvent {
           icon_url: deletedBy.avatarURL() ?? deletedBy.defaultAvatarURL,
         }
       : undefined
+
+    const stickerCount = await Discord.getStickerCount(guild)
+    const maxStickerCount = Discord.getMaxStickerCount(guild)
+
     await channel.send({
       embeds: [
         {
@@ -43,6 +48,12 @@ export class DiscordStickerDeleteEvent extends BaseDiscordEvent {
             url: sticker.url,
           },
           author,
+          fields: [
+            {
+              name: 'Can be add sticker count',
+              value: `${stickerCount} / ${maxStickerCount}`,
+            },
+          ],
           color: 0x00_ff_00,
           timestamp: new Date().toISOString(),
         },

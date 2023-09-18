@@ -3,6 +3,8 @@ import {
   BaseInteraction,
   CacheType,
   Client,
+  Guild,
+  GuildPremiumTier,
   SlashCommandBuilder,
   SlashCommandSubcommandBuilder,
   SlashCommandSubcommandGroupBuilder,
@@ -221,5 +223,62 @@ export class Discord {
         resolve()
       })
     })
+  }
+
+  public static async getNormalEmojiCount(guild: Guild) {
+    const emojis = await guild.emojis.fetch()
+    return emojis.filter((emoji) => !emoji.animated).size
+  }
+
+  public static async getAnimatedEmojiCount(guild: Guild) {
+    const emojis = await guild.emojis.fetch()
+    return emojis.filter((emoji) => emoji.animated).size
+  }
+
+  public static async getStickerCount(guild: Guild) {
+    const stickers = await guild.stickers.fetch()
+    return stickers.size
+  }
+
+  public static getMaxEmojiCount(guild: Guild) {
+    switch (guild.premiumTier) {
+      case GuildPremiumTier.Tier1: {
+        // レベル1 = 100 絵文字スロット
+        return 100
+      }
+      case GuildPremiumTier.Tier2: {
+        // レベル2 = 150 絵文字スロット
+        return 150
+      }
+      case GuildPremiumTier.Tier3: {
+        // レベル3 = 250 絵文字スロット
+        return 250
+      }
+      default: {
+        // レベル0 = 50 絵文字スロット
+        return 50
+      }
+    }
+  }
+
+  public static getMaxStickerCount(guild: Guild) {
+    switch (guild.premiumTier) {
+      case GuildPremiumTier.Tier1: {
+        // レベル1 = 15 ステッカースロット
+        return 15
+      }
+      case GuildPremiumTier.Tier2: {
+        // レベル2 = 30 ステッカースロット
+        return 30
+      }
+      case GuildPremiumTier.Tier3: {
+        // レベル3 = 60 ステッカースロット
+        return 60
+      }
+      default: {
+        // レベル0 = 5 ステッカースロット
+        return 5
+      }
+    }
   }
 }

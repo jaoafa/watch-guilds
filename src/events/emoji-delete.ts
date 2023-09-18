@@ -3,6 +3,7 @@ import { BaseDiscordEvent } from '.'
 import { Logger } from '@book000/node-utils'
 import { WatchGuildServer } from '@/server'
 import { ListEmojis } from '@/list-emojis'
+import { Discord } from '@/discord'
 
 export class DiscordEmojiDeleteEvent extends BaseDiscordEvent {
   get eventName(): keyof ClientEvents {
@@ -42,6 +43,16 @@ export class DiscordEmojiDeleteEvent extends BaseDiscordEvent {
           icon_url: deletedBy.avatarURL() ?? deletedBy.defaultAvatarURL,
         }
       : undefined
+
+    const normalEmojiCount = await Discord.getNormalEmojiCount(guild)
+    const animatedEmojiCount = await Discord.getAnimatedEmojiCount(guild)
+    const maxEmojiCount = Discord.getMaxEmojiCount(guild)
+
+    const emojiCountField = {
+      name: 'Can be add emoji count',
+      value: `Normal: ${normalEmojiCount} / ${maxEmojiCount}\nAnimated: ${animatedEmojiCount} / ${maxEmojiCount}`,
+    }
+
     await channel.send({
       embeds: [
         {
@@ -50,6 +61,7 @@ export class DiscordEmojiDeleteEvent extends BaseDiscordEvent {
             url: emoji.url,
           },
           author,
+          fields: [emojiCountField],
           color: 0xff_00_00,
           timestamp: new Date().toISOString(),
         },

@@ -2,6 +2,7 @@ import { ClientEvents, Sticker } from 'discord.js'
 import { BaseDiscordEvent } from '.'
 import { Logger } from '@book000/node-utils'
 import { WatchGuildServer } from '@/server'
+import { Discord } from '@/discord'
 
 export class DiscordStickerCreateEvent extends BaseDiscordEvent {
   get eventName(): keyof ClientEvents {
@@ -31,6 +32,9 @@ export class DiscordStickerCreateEvent extends BaseDiscordEvent {
         }
       : undefined
 
+    const stickerCount = await Discord.getStickerCount(guild)
+    const maxStickerCount = Discord.getMaxStickerCount(guild)
+
     logger.info(
       `🆕 Sticker created: ${sticker.name} (${sticker.id}) in ${guild.name} (${guild.id})`
     )
@@ -56,6 +60,10 @@ export class DiscordStickerCreateEvent extends BaseDiscordEvent {
               name: 'Format',
               value: this.getStickerFormatType(sticker.format),
               inline: true,
+            },
+            {
+              name: 'Can be add sticker count',
+              value: `${stickerCount} / ${maxStickerCount}`,
             },
           ],
           author,
