@@ -5,6 +5,7 @@ import { WatchGuildServer } from '@/server'
 import { mentionEmoji } from '@/utils'
 import { ListEmojis } from '@/list-emojis'
 import { EmojisCache } from '@/emojis-caches'
+import { Discord } from '@/discord'
 
 export class DiscordEmojiCreateEvent extends BaseDiscordEvent {
   get eventName(): keyof ClientEvents {
@@ -52,7 +53,18 @@ export class DiscordEmojiCreateEvent extends BaseDiscordEvent {
           }
         : undefined
 
-    const fields = matchEmojisField ? [matchEmojisField] : undefined
+    const normalEmojiCount = await Discord.getNormalEmojiCount(guild)
+    const animatedEmojiCount = await Discord.getAnimatedEmojiCount(guild)
+    const maxEmojiCount = Discord.getMaxEmojiCount(guild)
+
+    const emojiCountField = {
+      name: 'Can be add emoji count',
+      value: `Normal: ${normalEmojiCount} / ${maxEmojiCount}\nAnimated: ${animatedEmojiCount} / ${maxEmojiCount}`,
+    }
+
+    const fields = matchEmojisField
+      ? [matchEmojisField, emojiCountField]
+      : [emojiCountField]
 
     await channel.send({
       embeds: [
