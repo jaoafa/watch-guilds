@@ -64,7 +64,7 @@ export class DiscordEmojiUpdateEvent extends BaseDiscordEvent {
     await channel.send({
       embeds: [
         {
-          title: `:repeat:UPDATED EMOJI : ${mentionEmoji(newEmoji)}`,
+          title: `:repeat: UPDATED EMOJI : ${mentionEmoji(newEmoji)}`,
           thumbnail: {
             url: newEmoji.url,
           },

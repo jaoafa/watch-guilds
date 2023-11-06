@@ -42,7 +42,7 @@ export class DiscordStickerUpdateEvent extends BaseDiscordEvent {
     await channel.send({
       embeds: [
         {
-          title: `:repeat:UPDATED STICKER (${updateType}) : ${newSticker.name}`,
+          title: `:repeat: UPDATED STICKER (${updateType}) : ${newSticker.name}`,
           thumbnail: {
             url: newSticker.url,
           },

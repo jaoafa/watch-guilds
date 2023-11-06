@@ -43,14 +43,14 @@ export class DiscordStickerDeleteEvent extends BaseDiscordEvent {
     await channel.send({
       embeds: [
         {
-          title: `:wave:DELETED STICKER : \`${sticker.name}\``,
+          title: `:wave: DELETED STICKER : \`${sticker.name}\``,
           thumbnail: {
             url: sticker.url,
           },
           author,
           fields: [
             {
-              name: 'Can be add sticker count',
+              name: 'Available Sticker Slots',
               value: `${stickerCount} / ${maxStickerCount}`,
             },
           ],

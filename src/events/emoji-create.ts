@@ -58,7 +58,7 @@ export class DiscordEmojiCreateEvent extends BaseDiscordEvent {
     const maxEmojiCount = Discord.getMaxEmojiCount(guild)
 
     const emojiCountField = {
-      name: 'Can be add emoji count',
+      name: 'Available Emoji Slots',
       value: `Normal: ${normalEmojiCount} / ${maxEmojiCount}\nAnimated: ${animatedEmojiCount} / ${maxEmojiCount}`,
     }
 
@@ -69,7 +69,7 @@ export class DiscordEmojiCreateEvent extends BaseDiscordEvent {
     await channel.send({
       embeds: [
         {
-          title: `:new:NEW EMOJI : ${mentionEmoji(emoji)} (\`${emoji.name}\`)`,
+          title: `:new: NEW EMOJI : ${mentionEmoji(emoji)} (\`${emoji.name}\`)`,
           thumbnail: {
             url: emoji.url,
           },
