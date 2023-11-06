@@ -49,14 +49,14 @@ export class DiscordEmojiDeleteEvent extends BaseDiscordEvent {
     const maxEmojiCount = Discord.getMaxEmojiCount(guild)
 
     const emojiCountField = {
-      name: 'Can be add emoji count',
+      name: 'Available Emoji Slots',
       value: `Normal: ${normalEmojiCount} / ${maxEmojiCount}\nAnimated: ${animatedEmojiCount} / ${maxEmojiCount}`,
     }
 
     await channel.send({
       embeds: [
         {
-          title: `:wave:DELETED EMOJI : \`${emoji.name}\``,
+          title: `:wave: DELETED EMOJI : \`${emoji.name}\``,
           thumbnail: {
             url: emoji.url,
           },

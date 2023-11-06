@@ -42,7 +42,7 @@ export class DiscordStickerCreateEvent extends BaseDiscordEvent {
     await channel.send({
       embeds: [
         {
-          title: `:new:NEW STICKER : \`${sticker.name}\``,
+          title: `:new: NEW STICKER : \`${sticker.name}\``,
           thumbnail: {
             url: sticker.url,
           },
@@ -62,7 +62,7 @@ export class DiscordStickerCreateEvent extends BaseDiscordEvent {
               inline: true,
             },
             {
-              name: 'Can be add sticker count',
+              name: 'Available Sticker Slots',
               value: `${stickerCount} / ${maxStickerCount}`,
             },
           ],
