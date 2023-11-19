@@ -3,6 +3,7 @@ import {
   BaseInteraction,
   CacheType,
   Client,
+  GatewayIntentBits,
   Guild,
   GuildPremiumTier,
   SlashCommandBuilder,
@@ -17,7 +18,6 @@ import { UnregisterCommand } from './commands/unregister'
 import { SetChannelCommand } from './commands/set-channel'
 import { RemoveChannelCommand } from './commands/remove-channel'
 import { BaseDiscordEvent } from './events'
-import { DiscordInteractionCreateEvent } from './events/interaction-create'
 import { DiscordEmojiCreateEvent } from './events/emoji-create'
 import { DiscordEmojiUpdateEvent } from './events/emoji-update'
 import { DiscordEmojiDeleteEvent } from './events/emoji-delete'
@@ -45,12 +45,16 @@ export class Discord {
 
   constructor(config: WGConfiguration) {
     this.client = new Client({
-      intents: ['Guilds', 'GuildMessages', 'GuildEmojisAndStickers'],
+      intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildEmojisAndStickers,
+      ],
     })
     this.client.on('ready', this.onReady.bind(this))
+    this.client.on('guildCreate', this.updateCommands.bind(this))
 
     const events: BaseDiscordEvent[] = [
-      new DiscordInteractionCreateEvent(this),
       new DiscordGuildCreateEvent(this),
       new DiscordEmojiCreateEvent(this),
       new DiscordEmojiUpdateEvent(this),
@@ -211,7 +215,7 @@ export class Discord {
       }
     }
 
-    await this.client.application.commands.set([builder.toJSON()], guild.id)
+    await this.client.application.commands.create(builder.toJSON(), guild.id)
   }
 
   waitReady() {
