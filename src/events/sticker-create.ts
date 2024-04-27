@@ -1,13 +1,11 @@
-import { ClientEvents, Sticker } from 'discord.js'
+import { Sticker } from 'discord.js'
 import { BaseDiscordEvent } from '.'
 import { Logger } from '@book000/node-utils'
 import { WatchGuildServer } from '@/server'
 import { Discord } from '@/discord'
 
 export class DiscordStickerCreateEvent extends BaseDiscordEvent {
-  get eventName(): keyof ClientEvents {
-    return 'stickerCreate'
-  }
+  readonly eventName = 'stickerCreate'
 
   async execute(sticker: Sticker) {
     const logger = Logger.configure('Discord.onStickerCreate')
@@ -20,7 +18,7 @@ export class DiscordStickerCreateEvent extends BaseDiscordEvent {
       return
     }
     const channel = guild.channels.cache.get(channelId)
-    if (!channel || !channel.isTextBased()) {
+    if (!channel?.isTextBased()) {
       return
     }
     const user = await sticker.fetchUser()

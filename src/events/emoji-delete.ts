@@ -1,4 +1,4 @@
-import { AuditLogEvent, ClientEvents, GuildEmoji, User } from 'discord.js'
+import { AuditLogEvent, GuildEmoji, User } from 'discord.js'
 import { BaseDiscordEvent } from '.'
 import { Logger } from '@book000/node-utils'
 import { WatchGuildServer } from '@/server'
@@ -6,9 +6,7 @@ import { ListEmojis } from '@/list-emojis'
 import { Discord } from '@/discord'
 
 export class DiscordEmojiDeleteEvent extends BaseDiscordEvent {
-  get eventName(): keyof ClientEvents {
-    return 'emojiDelete'
-  }
+  readonly eventName = 'emojiDelete'
 
   async execute(emoji: GuildEmoji) {
     const logger = Logger.configure('Discord.onEmojiDelete')
@@ -26,7 +24,7 @@ export class DiscordEmojiDeleteEvent extends BaseDiscordEvent {
       return
     }
     const channel = guild.channels.cache.get(channelId)
-    if (!channel || !channel.isTextBased()) {
+    if (!channel?.isTextBased()) {
       await listGeneratorPromise
       return
     }

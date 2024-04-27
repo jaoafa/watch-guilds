@@ -28,6 +28,7 @@ export type EmojisWithGuild = Emoji & {
   guild: Guild
 }
 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class EmojisCache {
   private static baseServerDirectory = process.env.BASE_EMOJIS_CACHE_DIR
     ? `${process.env.BASE_EMOJIS_CACHE_DIR}/`
@@ -58,7 +59,7 @@ export class EmojisCache {
       return null
     }
 
-    return JSON.parse(fs.readFileSync(path, 'utf8'))
+    return JSON.parse(fs.readFileSync(path, 'utf8')) as EmojisCacheFile
   }
 
   static async refresh(guild: Guild) {

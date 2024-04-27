@@ -1,4 +1,4 @@
-import { ClientEvents, GuildEmoji } from 'discord.js'
+import { GuildEmoji } from 'discord.js'
 import { BaseDiscordEvent } from '.'
 import { Logger } from '@book000/node-utils'
 import { WatchGuildServer } from '@/server'
@@ -8,9 +8,7 @@ import { EmojisCache } from '@/emojis-caches'
 import { Discord } from '@/discord'
 
 export class DiscordEmojiCreateEvent extends BaseDiscordEvent {
-  get eventName(): keyof ClientEvents {
-    return 'emojiCreate'
-  }
+  readonly eventName = 'emojiCreate'
 
   async execute(emoji: GuildEmoji) {
     const logger = Logger.configure('Discord.onEmojiCreate')
@@ -31,7 +29,7 @@ export class DiscordEmojiCreateEvent extends BaseDiscordEvent {
       return
     }
     const channel = guild.channels.cache.get(channelId)
-    if (!channel || !channel.isTextBased()) {
+    if (!channel?.isTextBased()) {
       await listGeneratorPromise
       return
     }

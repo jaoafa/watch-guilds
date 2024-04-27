@@ -1,6 +1,5 @@
 import { SlashCommandSubcommandBuilder } from '@discordjs/builders'
 import {
-  CacheType,
   ChatInputCommandInteraction,
   SlashCommandSubcommandGroupBuilder,
   PermissionResolvable,
@@ -37,7 +36,7 @@ export class CheckPermissionsCommand implements BaseCommand {
 
   async execute(
     _discord: Discord,
-    interaction: ChatInputCommandInteraction<CacheType>
+    interaction: ChatInputCommandInteraction
   ): Promise<void> {
     await interaction.deferReply()
 
@@ -76,9 +75,7 @@ export class CheckPermissionsCommand implements BaseCommand {
       ViewAuditLog: '監査ログの表示',
       ManageEmojisAndStickers: '絵文字の管理',
     }
-    const permStatus: {
-      [key: string]: boolean
-    } = {}
+    const permStatus: Record<string, boolean> = {}
     for (const perm of Object.keys(needPerms)) {
       permStatus[perm] = botMember.permissions.has(perm as PermissionResolvable)
     }
@@ -114,9 +111,7 @@ export class CheckPermissionsCommand implements BaseCommand {
           continue
         }
 
-        const channelPerms: {
-          [key: string]: boolean
-        } = {}
+        const channelPerms: Record<string, boolean> = {}
         for (const perm of Object.keys(needChannelPerms)) {
           channelPerms[perm] = channel
             .permissionsFor(botMember)

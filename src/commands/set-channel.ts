@@ -1,6 +1,5 @@
 import { SlashCommandSubcommandBuilder } from '@discordjs/builders'
 import {
-  CacheType,
   ChannelType,
   ChatInputCommandInteraction,
   BaseGuild,
@@ -66,7 +65,7 @@ export class SetChannelCommand implements BaseCommand {
 
   async execute(
     discord: Discord,
-    interaction: ChatInputCommandInteraction<CacheType>
+    interaction: ChatInputCommandInteraction
   ): Promise<void> {
     const logger = Logger.configure(this.constructor.name + '.execute')
     await interaction.deferReply()
@@ -136,19 +135,6 @@ export class SetChannelCommand implements BaseCommand {
     }
 
     const guild = interaction.guild
-    if (!guild) {
-      await interaction.editReply({
-        embeds: [
-          {
-            title: '❌ 登録に失敗',
-            description: 'このコマンドはDiscordサーバ内でのみ実行できます。',
-            color: 0xff_00_00,
-            timestamp: new Date().toISOString(),
-          },
-        ],
-      })
-      return
-    }
     const botMember = guild.members.resolve(interaction.client.user)
     if (!botMember) {
       await interaction.editReply({

@@ -1,13 +1,11 @@
-import { AuditLogEvent, ClientEvents, Sticker, User } from 'discord.js'
+import { AuditLogEvent, Sticker, User } from 'discord.js'
 import { BaseDiscordEvent } from '.'
 import { Logger } from '@book000/node-utils'
 import { WatchGuildServer } from '@/server'
 import { Discord } from '@/discord'
 
 export class DiscordStickerDeleteEvent extends BaseDiscordEvent {
-  get eventName(): keyof ClientEvents {
-    return 'stickerDelete'
-  }
+  readonly eventName = 'stickerDelete'
 
   async execute(sticker: Sticker) {
     const logger = Logger.configure('Discord.onStickerDelete')
@@ -20,7 +18,7 @@ export class DiscordStickerDeleteEvent extends BaseDiscordEvent {
       return
     }
     const channel = guild.channels.cache.get(channelId)
-    if (!channel || !channel.isTextBased()) {
+    if (!channel?.isTextBased()) {
       return
     }
 
@@ -71,7 +69,6 @@ export class DiscordStickerDeleteEvent extends BaseDiscordEvent {
 
     let user: User | null = null
     for (const log of auditLogs.entries.values()) {
-      if (!log.target) continue
       if (log.target.id !== sticker.id) continue
       user = log.executor
     }

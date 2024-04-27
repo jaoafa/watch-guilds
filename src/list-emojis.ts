@@ -47,7 +47,7 @@ export class ListEmojis {
     logger.info(`📝 Generating list for ${guild.name} (${guild.id})`)
 
     const channel = await this.discord.client.channels.fetch(channelId)
-    if (!channel || !channel.isTextBased()) {
+    if (!channel?.isTextBased()) {
       logger.warn(`❌ Channel not found: ${channelId}`)
       return
     }
@@ -79,7 +79,7 @@ export class ListEmojis {
     // 不要なメッセージを削除する: messagesにはあるけど、newMessagesにはないメッセージを削除する
     const deleteMessages = messages.filter(
       (message) =>
-        !newMessages.some((newMessage) => newMessage?.id === message?.id)
+        !newMessages.some((newMessage) => newMessage.id === message?.id)
     )
     await Promise.all(
       deleteMessages.map(async (message) => {
@@ -153,7 +153,7 @@ export class ListEmojis {
     fs.unlinkSync(path)
   }
 
-  private async saveListMessages(guild: Guild, messages: Message[]) {
+  private saveListMessages(guild: Guild, messages: Message[]) {
     const path = `${this.baseDirectory}${guild.id}.json`
     const messageIds = messages.map((message) => message.id)
 

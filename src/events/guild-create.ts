@@ -1,11 +1,9 @@
-import { ClientEvents, Guild } from 'discord.js'
+import { Guild } from 'discord.js'
 import { BaseDiscordEvent } from '.'
 import { Logger } from '@book000/node-utils'
 
 export class DiscordGuildCreateEvent extends BaseDiscordEvent {
-  get eventName(): keyof ClientEvents {
-    return 'guildCreate'
-  }
+  readonly eventName = 'guildCreate'
 
   async execute(guild: Guild) {
     const logger = Logger.configure('Discord.onGuildCreate')

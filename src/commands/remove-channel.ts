@@ -1,6 +1,5 @@
 import { SlashCommandSubcommandBuilder } from '@discordjs/builders'
 import {
-  CacheType,
   ChatInputCommandInteraction,
   BaseGuild,
   SlashCommandSubcommandGroupBuilder,
@@ -54,7 +53,7 @@ export class RemoveChannelCommand implements BaseCommand {
 
   async execute(
     discord: Discord,
-    interaction: ChatInputCommandInteraction<CacheType>
+    interaction: ChatInputCommandInteraction
   ): Promise<void> {
     await interaction.deferReply()
 
