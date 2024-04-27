@@ -2,7 +2,7 @@ import { Logger } from '@book000/node-utils'
 import { Discord } from './discord'
 import { WGConfiguration } from './config'
 
-async function main() {
+function main() {
   const logger = Logger.configure('main')
   logger.info('🚀 Starting...')
 
@@ -20,17 +20,16 @@ async function main() {
   const discord = new Discord(config)
   process.once('SIGINT', () => {
     logger.info('👋 SIGINT signal received.')
-    discord.close()
-
-    process.exit(0)
+    discord
+      .close()
+      .then(() => {
+        process.exit(0)
+      })
+      .catch((error: unknown) => {
+        logger.error('❌ Failed to close Discord client', error as Error)
+        process.exit(1)
+      })
   })
 }
 
-;(async () => {
-  await main().catch((error) => {
-    const logger = Logger.configure('main')
-    logger.error('Error', error as Error)
-    // eslint-disable-next-line unicorn/no-process-exit
-    process.exit(1)
-  })
-})()
+main()

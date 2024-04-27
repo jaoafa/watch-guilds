@@ -7,7 +7,7 @@ interface Configuration {
 }
 
 export class WGConfiguration extends ConfigFramework<Configuration> {
-  protected validates(): { [key: string]: (config: Configuration) => boolean } {
+  protected validates(): Record<string, (config: Configuration) => boolean> {
     return {
       'discord is required': (config) => !!config.discord,
       'discord.token is required': (config) => !!config.discord.token,
