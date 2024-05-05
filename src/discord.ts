@@ -32,6 +32,8 @@ import { CheckPermissionsCommand } from './commands/check-permissions'
 export class Discord {
   public readonly client: Client
 
+  private onInteractionFunction: (interaction: BaseInteraction) => void
+
   public static readonly routes: BaseCommand[] = [
     new RegisterCommand(),
     new UnregisterCommand(),
@@ -43,6 +45,7 @@ export class Discord {
   ]
 
   constructor(config: WGConfiguration) {
+    const logger = Logger.configure('Discord.constructor')
     this.client = new Client({
       intents: [
         GatewayIntentBits.Guilds,
@@ -50,8 +53,16 @@ export class Discord {
         GatewayIntentBits.GuildEmojisAndStickers,
       ],
     })
-    this.client.on('ready', this.onReady.bind(this))
-    this.client.on('guildCreate', this.updateCommands.bind(this))
+    this.client.on('ready', () => {
+      this.onReady().catch((error: unknown) => {
+        logger.error('❌ Failed to onReady', error as Error)
+      })
+    })
+    this.client.on('guildCreate', (guild) => {
+      this.updateCommands(guild).catch((error: unknown) => {
+        logger.error('❌ Failed to updateCommands', error as Error)
+      })
+    })
 
     const events: BaseDiscordEvent[] = [
       new DiscordGuildCreateEvent(this),
@@ -66,10 +77,14 @@ export class Discord {
       event.register()
     }
 
-    this.client.on('interactionCreate', this.onInteractionCreate.bind(this))
+    this.onInteractionFunction = (interaction) => {
+      this.onInteractionCreate(interaction).catch((error: unknown) => {
+        logger.error('❌ Failed to run onInteractionCreate', error as Error)
+      })
+    }
+    this.client.on('interactionCreate', this.onInteractionFunction)
 
     this.client.login(config.get('discord').token).catch((error: unknown) => {
-      const logger = Logger.configure('Discord.constructor')
       logger.error('❌ Failed to login', error as Error)
     })
   }
@@ -94,11 +109,8 @@ export class Discord {
       () => {
         const logger = Logger.configure('Discord.onReady.setInterval')
         logger.info('🔄 Re-registering interactionCreate handler')
-        this.client.off(
-          'interactionCreate',
-          this.onInteractionCreate.bind(this)
-        )
-        this.client.on('interactionCreate', this.onInteractionCreate.bind(this))
+        this.client.off('interactionCreate', this.onInteractionFunction)
+        this.client.on('interactionCreate', this.onInteractionFunction)
 
         this.updateAllGuildCommands().catch((error: unknown) => {
           logger.error('❌ Failed to update commands', error as Error)
