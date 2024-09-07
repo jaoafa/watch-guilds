@@ -28,7 +28,6 @@ export type EmojisWithGuild = Emoji & {
   guild: Guild
 }
 
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class EmojisCache {
   private static baseServerDirectory = process.env.BASE_EMOJIS_CACHE_DIR
     ? `${process.env.BASE_EMOJIS_CACHE_DIR}/`

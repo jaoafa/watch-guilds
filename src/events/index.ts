@@ -11,8 +11,9 @@ export abstract class BaseDiscordEvent {
   abstract get eventName(): keyof ClientEvents
 
   register(): void {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.discord.client.on(this.eventName, this.execute.bind(this))
   }
 
-  abstract execute(...args: any[]): void
+  abstract execute(...args: any[]): Promise<void>
 }

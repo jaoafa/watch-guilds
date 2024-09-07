@@ -1,4 +1,10 @@
-import { Guild, BaseGuild, TextBasedChannel, Message } from 'discord.js'
+import {
+  Guild,
+  BaseGuild,
+  TextBasedChannel,
+  Message,
+  PartialGroupDMChannel,
+} from 'discord.js'
 import { Discord } from './discord'
 import { mentionEmoji } from './utils'
 import fs from 'node:fs'
@@ -51,6 +57,10 @@ export class ListEmojis {
       logger.warn(`❌ Channel not found: ${channelId}`)
       return
     }
+    if (channel.isDMBased()) {
+      logger.warn(`❌ Channel is unsupported (DM): ${channelId}`)
+      return
+    }
 
     let messages = await this.getListMessages(guild, channel)
     logger.info(`📝 Found ${messages.length} messages`)
@@ -92,7 +102,7 @@ export class ListEmojis {
   }
 
   private async replaceOrCreateMessage(
-    channel: TextBasedChannel,
+    channel: Exclude<TextBasedChannel, PartialGroupDMChannel>,
     messages: (Message | null)[],
     contents: string[]
   ) {
