@@ -27,7 +27,7 @@
     "@book000/eslint-config": "1.7.67",
     "@book000/node-utils": "1.13.286",
     "@discordjs/builders": "1.9.0",
-    "@types/node": "22.7.4",
+    "@types/node": "22.7.5",
     "@vercel/ncc": "0.38.2",
     "discord.js": "14.16.3",
     "eslint": "9.12.0",
