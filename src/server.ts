@@ -12,7 +12,7 @@ export type WGChannelType = (typeof wgChannelTypes)[number]
 interface WatchGuildServerData {
   id: string
   name: string
-  channels: { [key in WGChannelType]: string | null }
+  channels: Record<WGChannelType, string | null>
 }
 
 export class WatchGuildServer {

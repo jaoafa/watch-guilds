@@ -50,7 +50,7 @@ export class Discord {
       intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.GuildEmojisAndStickers,
+        GatewayIntentBits.GuildExpressions,
       ],
     })
     this.client.on('ready', () => {
