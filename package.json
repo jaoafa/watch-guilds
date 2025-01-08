@@ -29,7 +29,7 @@
     "@discordjs/builders": "1.10.0",
     "@types/node": "22.7.5",
     "@vercel/ncc": "0.38.3",
-    "discord.js": "14.17.2",
+    "discord.js": "14.17.3",
     "eslint": "9.17.0",
     "eslint-config-standard": "17.1.0",
     "eslint-plugin-import": "2.31.0",
