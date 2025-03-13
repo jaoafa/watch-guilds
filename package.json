@@ -24,7 +24,7 @@
     "fix:prettier": "prettier --write src"
   },
   "devDependencies": {
-    "@book000/eslint-config": "1.8.24",
+    "@book000/eslint-config": "1.8.25",
     "@book000/node-utils": "1.14.31",
     "@discordjs/builders": "1.10.0",
     "@types/node": "22.7.5",
