@@ -30,7 +30,7 @@
     "@types/node": "22.7.5",
     "@vercel/ncc": "0.38.3",
     "discord.js": "14.17.3",
-    "eslint": "9.22.0",
+    "eslint": "9.23.0",
     "eslint-config-standard": "17.1.0",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-n": "17.16.2",
