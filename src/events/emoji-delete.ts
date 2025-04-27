@@ -55,9 +55,7 @@ export class DiscordEmojiDeleteEvent extends BaseDiscordEvent {
       embeds: [
         {
           title: `:wave: DELETED EMOJI : \`${emoji.name}\``,
-          thumbnail: {
-            url: emoji.url,
-          },
+          thumbnail: { url: emoji.url },
           author,
           fields: [emojiCountField],
           color: 0xff_00_00,
@@ -78,9 +76,13 @@ export class DiscordEmojiDeleteEvent extends BaseDiscordEvent {
 
     let user: User | null = null
     for (const log of auditLogs.entries.values()) {
-      if (!log.target) continue
       if (log.target.id !== emoji.id) continue
-      user = log.executor
+      const executor = log.executor
+      if (!executor) continue
+
+      // is Partial User
+      user = executor.partial ? await executor.fetch() : executor
+      break
     }
 
     return user

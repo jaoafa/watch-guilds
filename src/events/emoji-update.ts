@@ -63,20 +63,10 @@ export class DiscordEmojiUpdateEvent extends BaseDiscordEvent {
       embeds: [
         {
           title: `:repeat: UPDATED EMOJI : ${mentionEmoji(newEmoji)}`,
-          thumbnail: {
-            url: newEmoji.url,
-          },
+          thumbnail: { url: newEmoji.url },
           fields: [
-            {
-              name: 'Before',
-              value: `\`${oldEmoji.name}\``,
-              inline: true,
-            },
-            {
-              name: 'After',
-              value: `\`${newEmoji.name}\``,
-              inline: true,
-            },
+            { name: 'Before', value: `\`${oldEmoji.name}\``, inline: true },
+            { name: 'After', value: `\`${newEmoji.name}\``, inline: true },
             ...fields,
           ],
           author,
@@ -98,9 +88,13 @@ export class DiscordEmojiUpdateEvent extends BaseDiscordEvent {
 
     let user: User | null = null
     for (const log of auditLogs.entries.values()) {
-      if (!log.target) continue
       if (log.target.id !== emoji.id) continue
-      user = log.executor
+      const executor = log.executor
+      if (!executor) continue
+
+      // is Partial User
+      user = executor.partial ? await executor.fetch() : executor
+      break
     }
 
     return user

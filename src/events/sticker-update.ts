@@ -41,9 +41,7 @@ export class DiscordStickerUpdateEvent extends BaseDiscordEvent {
       embeds: [
         {
           title: `:repeat: UPDATED STICKER (${updateType}) : ${newSticker.name}`,
-          thumbnail: {
-            url: newSticker.url,
-          },
+          thumbnail: { url: newSticker.url },
           fields: [
             {
               name: 'Before',
@@ -81,7 +79,12 @@ export class DiscordStickerUpdateEvent extends BaseDiscordEvent {
     let user: User | null = null
     for (const log of auditLogs.entries.values()) {
       if (log.target.id !== sticker.id) continue
-      user = log.executor
+      const executor = log.executor
+      if (!executor) continue
+
+      // is Partial User
+      user = executor.partial ? await executor.fetch() : executor
+      break
     }
 
     return user
