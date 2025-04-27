@@ -42,9 +42,7 @@ export class DiscordStickerDeleteEvent extends BaseDiscordEvent {
       embeds: [
         {
           title: `:wave: DELETED STICKER : \`${sticker.name}\``,
-          thumbnail: {
-            url: sticker.url,
-          },
+          thumbnail: { url: sticker.url },
           author,
           fields: [
             {
@@ -70,7 +68,12 @@ export class DiscordStickerDeleteEvent extends BaseDiscordEvent {
     let user: User | null = null
     for (const log of auditLogs.entries.values()) {
       if (log.target.id !== sticker.id) continue
-      user = log.executor
+      const executor = log.executor
+      if (!executor) continue
+
+      // is Partial User
+      user = executor.partial ? await executor.fetch() : executor
+      break
     }
 
     return user
