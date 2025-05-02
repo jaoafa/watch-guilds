@@ -1,20 +1,7 @@
-FROM node:22-alpine AS builder
+FROM node:22-alpine
 
-WORKDIR /app
-
-COPY package.json .
-COPY yarn.lock .
-
-RUN echo network-timeout 600000 > .yarnrc && \
-  yarn install --frozen-lockfile && \
-  yarn cache clean
-
-COPY src src
-COPY tsconfig.json .
-
-RUN yarn package
-
-FROM node:22-alpine AS runner
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME/bin:$PATH"
 
 # hadolint ignore=DL3018
 RUN apk update && \
@@ -22,18 +9,23 @@ RUN apk update && \
   apk add --update --no-cache tzdata && \
   cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
   echo "Asia/Tokyo" > /etc/timezone && \
-  apk del tzdata
+  apk del tzdata && \
+  npm install -g corepack@latest && \
+  pnpm approve-builds && \
+  corepack enable
 
 WORKDIR /app
 
-COPY --from=builder /app/output .
+COPY pnpm-lock.yaml ./
+
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm fetch
+
+COPY package.json tsconfig.json ./
+COPY src src
+
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --offline && \
+  pnpm approve-builds
 
 ENV NODE_ENV=production
-ENV CONFIG_PATH=/data/config.json
-ENV BASE_SERVER_DIR=/data/servers/
-ENV BASE_EMOJI_LISTS_DIR=/data/emoji-lists/
-ENV BASE_EMOJIS_CACHE_DIR=/data/emojis-cache/
 
-VOLUME [ "/data" ]
-
-ENTRYPOINT [ "node", "index.js" ]
+ENTRYPOINT [ "pnpm", "start" ]
