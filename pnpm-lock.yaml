@@ -20,9 +20,6 @@ importers:
       '@types/node':
         specifier: 22.15.3
         version: 22.15.3
-      '@vercel/ncc':
-        specifier: 0.38.3
-        version: 0.38.3
       discord.js:
         specifier: 14.19.2
         version: 14.19.2
@@ -41,9 +38,6 @@ importers:
       eslint-plugin-promise:
         specifier: 7.2.1
         version: 7.2.1(eslint@9.25.1)
-      eslint-plugin-unicorn:
-        specifier: 59.0.0
-        version: 59.0.0(eslint@9.25.1)
       natsort:
         specifier: 2.0.3
         version: 2.0.3
@@ -441,10 +435,6 @@ packages:
   '@typescript-eslint/visitor-keys@8.31.1':
     resolution: {integrity: sha512-I+/rgqOVBn6f0o7NDTmAPWWC6NuqhV174lfYvAm9fUaWeiefLdux9/YI3/nLugEn9L8fcSi0XmpKi/r5u0nmpw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@vercel/ncc@0.38.3':
-    resolution: {integrity: sha512-rnK6hJBS6mwc+Bkab+PGPs9OiS0i/3kdTO+CkI8V0/VrW3vmz7O2Pxjw/owOlmo6PKEIxRSeZKv/kuL9itnpYA==}
-    hasBin: true
 
   '@vladfrangu/async_event_emitter@2.4.6':
     resolution: {integrity: sha512-RaI5qZo6D2CVS6sTHFKg1v5Ohq/+Bo2LZ5gzUEwZ/WkHhwtGTCB/sVLw8ijOkAUxasZ+WshN/Rzj4ywsABJ5ZA==}
@@ -2199,8 +2189,6 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.31.1
       eslint-visitor-keys: 4.2.0
-
-  '@vercel/ncc@0.38.3': {}
 
   '@vladfrangu/async_event_emitter@2.4.6': {}
 
