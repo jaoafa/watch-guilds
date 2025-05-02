@@ -27,5 +27,9 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
   pnpm approve-builds
 
 ENV NODE_ENV=production
+ENV CONFIG_PATH=/data/config.json
+ENV BASE_SERVER_DIR=/data/servers/
+ENV BASE_EMOJI_LISTS_DIR=/data/emoji-lists/
+ENV BASE_EMOJIS_CACHE_DIR=/data/emojis-cache/
 
 ENTRYPOINT [ "pnpm", "start" ]
