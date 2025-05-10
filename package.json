@@ -31,7 +31,7 @@
     "@book000/eslint-config": "1.8.69",
     "@book000/node-utils": "1.15.20",
     "@discordjs/builders": "1.11.2",
-    "@types/node": "22.15.14",
+    "@types/node": "22.15.15",
     "discord.js": "14.19.3",
     "eslint": "9.26.0",
     "eslint-config-standard": "17.1.0",
