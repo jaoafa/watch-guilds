@@ -177,8 +177,8 @@ export class ListEmojis {
   private async getEmojis(guild: Guild) {
     const emojis = await guild.emojis.fetch()
     const sorter = natsort()
-    return emojis
-      .sort((a, b) => {
+    return [...emojis.values()]
+      .toSorted((a, b) => {
         if (!a.name) return 0
         if (!b.name) return 0
 
