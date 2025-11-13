@@ -28,7 +28,7 @@
     "start": "tsx ./src/main.ts"
   },
   "devDependencies": {
-    "@book000/eslint-config": "1.11.20",
+    "@book000/eslint-config": "1.11.21",
     "@book000/node-utils": "1.18.155",
     "@discordjs/builders": "1.13.0",
     "@types/node": "24.10.0",
