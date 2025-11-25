@@ -1,6 +1,6 @@
-import { SlashCommandSubcommandBuilder } from '@discordjs/builders'
 import {
   ChatInputCommandInteraction,
+  SlashCommandSubcommandBuilder,
   SlashCommandSubcommandGroupBuilder,
   PermissionResolvable,
   EmbedField,
