@@ -51,8 +51,8 @@ importers:
         specifier: 5.9.3
         version: 5.9.3
       typescript-json-schema:
-        specifier: 0.67.3
-        version: 0.67.3
+        specifier: 0.67.4
+        version: 0.67.4
 
 packages:
 
@@ -1682,8 +1682,8 @@ packages:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       typescript: '>=4.8.4 <6.1.0'
 
-  typescript-json-schema@0.67.3:
-    resolution: {integrity: sha512-QGOi/rZgbo9pDl1G+s3WFHiJZi4vj6zHHfQpxA00J3I7p0VC+JjYgX70NiuZu2liXF3YtSErv5C3ZRKtQSwhoQ==}
+  typescript-json-schema@0.67.4:
+    resolution: {integrity: sha512-BhDCVfwGtPKKt9JOBvh6ocmSbEk7ftx7dpqqIpvGNrjzYcUKm8pnYwKSFfNJwqcp/qNTfZr9sKtVyTxx4V9iRA==}
     hasBin: true
 
   typescript@5.9.3:
@@ -1721,8 +1721,8 @@ packages:
   v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
 
-  vm2@3.11.2:
-    resolution: {integrity: sha512-hnsYAgBSAgwwPM/Gq66gMmUY0VlY9mKC8nvVRAZiJp+tYxF4sfNRlZymP8uqzIUK2U/7+SVZ/H8p7USxNHLlZA==}
+  vm2@3.11.5:
+    resolution: {integrity: sha512-RSrkBiwrj6FRU+QdqNs6KG0XdlvJCjpQ4GXiqmMbrhmwfu5k/XIMpAer0L8f6iuf0uJ3a4T1xJN126Q8yf0VIA==}
     engines: {node: '>=6.0'}
     hasBin: true
 
@@ -3673,7 +3673,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  typescript-json-schema@0.67.3:
+  typescript-json-schema@0.67.4:
     dependencies:
       '@types/json-schema': 7.0.15
       '@types/node': 24.12.4
@@ -3682,7 +3682,7 @@ snapshots:
       safe-stable-stringify: 2.5.0
       ts-node: 10.9.2(@types/node@24.12.4)(typescript@5.9.3)
       typescript: 5.9.3
-      vm2: 3.11.2
+      vm2: 3.11.5
       yargs: 18.0.0
     transitivePeerDependencies:
       - '@swc/core'
@@ -3717,7 +3717,7 @@ snapshots:
 
   v8-compile-cache-lib@3.0.1: {}
 
-  vm2@3.11.2:
+  vm2@3.11.5:
     dependencies:
       acorn: 8.16.0
       acorn-walk: 8.3.5
