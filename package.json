@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@book000/eslint-config": "1.14.40",
-    "@book000/node-utils": "1.24.170",
+    "@book000/node-utils": "1.24.193",
     "@types/node": "24.12.4",
     "discord.js": "14.26.4",
     "eslint": "10.4.0",
@@ -40,7 +40,7 @@
     "natsort": "2.0.3",
     "prettier": "3.8.3",
     "run-z": "2.1.0",
-    "tsx": "4.22.2",
+    "tsx": "4.22.3",
     "typescript": "5.9.3",
     "typescript-json-schema": "0.67.4"
   },
