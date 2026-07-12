@@ -126,8 +126,7 @@ export class CheckPermissionsCommand implements BaseCommand {
           inline: true,
         })
 
-        isAllGranted =
-          isAllGranted && Object.values(channelPerms).every(Boolean)
+        isAllGranted &&= Object.values(channelPerms).every(Boolean)
       }
     }
 

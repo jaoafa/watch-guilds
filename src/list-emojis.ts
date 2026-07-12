@@ -87,9 +87,8 @@ export class ListEmojis {
     this.saveListMessages(guild, newMessages)
 
     // 不要なメッセージを削除する: messagesにはあるけど、newMessagesにはないメッセージを削除する
-    const deleteMessages = messages.filter(
-      (message) =>
-        !newMessages.some((newMessage) => newMessage.id === message?.id)
+    const deleteMessages = messages.filter((message) =>
+      newMessages.every((newMessage) => newMessage.id !== message?.id)
     )
     await Promise.all(
       deleteMessages.map(async (message) => {
@@ -128,7 +127,7 @@ export class ListEmojis {
    */
   private async deleteMessagesIfAlreadyDeleted(messages: (Message | null)[]) {
     // 一つでもメッセージが存在しなかったら、すべてのメッセージを削除する
-    if (!messages.some((message) => !message)) {
+    if (messages.every(Boolean)) {
       return false
     }
 
@@ -177,7 +176,9 @@ export class ListEmojis {
   private async getEmojis(guild: Guild) {
     const emojis = await guild.emojis.fetch()
     const sorter = natsort()
-    return [...emojis.values()]
+    return emojis
+      .values()
+      .toArray()
       .toSorted((a, b) => {
         if (!a.name) return 0
         if (!b.name) return 0
