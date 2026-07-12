@@ -11,9 +11,7 @@ import { Discord } from '@/discord'
 
 export class CheckPermissionsCommand implements BaseCommand {
   definition():
-    | SlashCommandSubcommandBuilder
-    | SlashCommandSubcommandGroupBuilder
-    | null {
+    SlashCommandSubcommandBuilder | SlashCommandSubcommandGroupBuilder | null {
     return new SlashCommandSubcommandBuilder()
       .setName('check-permissions')
       .setDescription(

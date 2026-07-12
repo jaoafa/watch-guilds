@@ -12,9 +12,7 @@ import { Logger } from '@book000/node-utils'
 
 export class RegisterCommand implements BaseCommand {
   definition():
-    | SlashCommandSubcommandBuilder
-    | SlashCommandSubcommandGroupBuilder
-    | null {
+    SlashCommandSubcommandBuilder | SlashCommandSubcommandGroupBuilder | null {
     return new SlashCommandSubcommandBuilder()
       .setName('register')
       .setDescription('このサーバを watch-guilds の対象サーバに設定します。')

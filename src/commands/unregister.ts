@@ -11,9 +11,7 @@ import { Logger } from '@book000/node-utils'
 
 export class UnregisterCommand implements BaseCommand {
   definition():
-    | SlashCommandSubcommandBuilder
-    | SlashCommandSubcommandGroupBuilder
-    | null {
+    SlashCommandSubcommandBuilder | SlashCommandSubcommandGroupBuilder | null {
     return new SlashCommandSubcommandBuilder()
       .setName('unregister')
       .setDescription('このサーバの watch-guilds の対象サーバから外します。')
