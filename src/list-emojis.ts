@@ -6,7 +6,7 @@ import {
   PartialGroupDMChannel,
 } from 'discord.js'
 import { Discord } from './discord'
-import { mentionEmoji } from './utils'
+import { mentionEmoji } from './utilities'
 import fs from 'node:fs'
 import { WatchGuildServer } from './server'
 import { Logger } from '@book000/node-utils'
@@ -87,14 +87,17 @@ export class ListEmojis {
     this.saveListMessages(guild, newMessages)
 
     // 不要なメッセージを削除する: messagesにはあるけど、newMessagesにはないメッセージを削除する
-    const deleteMessages = messages.filter(
-      (message) =>
-        !newMessages.some((newMessage) => newMessage.id === message?.id)
+    const messagesToDelete = messages.filter((message) =>
+      newMessages.every((newMessage) => newMessage.id !== message?.id)
     )
     await Promise.all(
-      deleteMessages.map(async (message) => {
+      messagesToDelete.map(async (message) => {
         if (!message) return
-        return await message.delete().catch(() => null)
+        try {
+          await message.delete()
+        } catch {
+          // 既に削除されている場合は無視する
+        }
       })
     )
 
@@ -108,9 +111,9 @@ export class ListEmojis {
   ) {
     const promises: Promise<Message>[] = []
     // eslint-disable-next-line unicorn/no-for-loop
-    for (let i = 0; i < contents.length; i++) {
-      const content = contents[i]
-      const message = messages.length > i ? messages[i] : null
+    for (let index = 0; index < contents.length; index++) {
+      const content = contents[index]
+      const message = messages.length > index ? messages[index] : null
       if (message) {
         promises.push(message.edit(content))
       } else {
@@ -128,14 +131,18 @@ export class ListEmojis {
    */
   private async deleteMessagesIfAlreadyDeleted(messages: (Message | null)[]) {
     // 一つでもメッセージが存在しなかったら、すべてのメッセージを削除する
-    if (!messages.some((message) => !message)) {
+    if (messages.every(Boolean)) {
       return false
     }
 
     await Promise.all(
-      messages.map((message) => {
-        if (!message) return Promise.resolve()
-        return message.delete().catch(() => null)
+      messages.map(async (message) => {
+        if (!message) return
+        try {
+          await message.delete()
+        } catch {
+          // 既に削除されている場合は無視する
+        }
       })
     )
     return true
@@ -171,13 +178,19 @@ export class ListEmojis {
   }
 
   private async getMessage(channel: TextBasedChannel, messageId: string) {
-    return await channel.messages.fetch(messageId).catch(() => null)
+    try {
+      return await channel.messages.fetch(messageId)
+    } catch {
+      return null
+    }
   }
 
   private async getEmojis(guild: Guild) {
     const emojis = await guild.emojis.fetch()
     const sorter = natsort()
-    return [...emojis.values()]
+    return emojis
+      .values()
+      .toArray()
       .toSorted((a, b) => {
         if (!a.name) return 0
         if (!b.name) return 0

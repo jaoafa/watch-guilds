@@ -23,15 +23,15 @@ export class RemoveChannelCommand implements BaseCommand {
     const groupBuilder = new SlashCommandSubcommandGroupBuilder()
       .setName('remove-channel')
       .setDescription('チャンネル設定を解除します。')
-    let needRegister = false
+    let isNeedRegister = false
     for (const builder of subCommandBuilders) {
       if (server.getChannelId(builder.name as WGChannelType) === null) {
         continue
       }
       groupBuilder.addSubcommand(builder)
-      needRegister = true
+      isNeedRegister = true
     }
-    if (!needRegister) {
+    if (!isNeedRegister) {
       return null
     }
     return groupBuilder
@@ -101,10 +101,6 @@ export class RemoveChannelCommand implements BaseCommand {
       })
       return
     }
-    const logger = Logger.configure(
-      this.constructor.name + '.executeRemoveChannel'
-    )
-
     if (server.getChannelId(type) === null) {
       await interaction.editReply({
         embeds: [
@@ -119,8 +115,12 @@ export class RemoveChannelCommand implements BaseCommand {
       return
     }
 
-    const channel = server.removeChannel(type)
-    if (!channel) {
+    const logger = Logger.configure(
+      this.constructor.name + '.executeRemoveChannel'
+    )
+
+    const isChannel = server.removeChannel(type)
+    if (!isChannel) {
       await interaction.editReply({
         embeds: [
           {

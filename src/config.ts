@@ -1,13 +1,13 @@
 import { ConfigFramework } from '@book000/node-utils'
 
-interface Configuration {
+interface Config {
   discord: {
     token: string
   }
 }
 
-export class WGConfiguration extends ConfigFramework<Configuration> {
-  protected validates(): Record<string, (config: Configuration) => boolean> {
+export class WGConfig extends ConfigFramework<Config> {
+  protected validates(): Record<string, (config: Config) => boolean> {
     return {
       'discord is required': (config) => !!config.discord,
       'discord.token is required': (config) => !!config.discord.token,

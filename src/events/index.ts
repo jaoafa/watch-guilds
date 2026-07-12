@@ -15,5 +15,5 @@ export abstract class BaseDiscordEvent {
     this.discord.client.on(this.eventName, this.execute.bind(this))
   }
 
-  abstract execute(...args: any[]): Promise<void>
+  abstract execute(...arguments_: any[]): Promise<void>
 }

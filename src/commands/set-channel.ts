@@ -35,15 +35,15 @@ export class SetChannelCommand implements BaseCommand {
     const groupBuilder = new SlashCommandSubcommandGroupBuilder()
       .setName('set-channel')
       .setDescription('チャンネルを設定します。')
-    let needRegister = false
+    let isNeedRegister = false
     for (const builder of subCommandBuilders) {
       if (server.getChannelId(builder.name as WGChannelType) !== null) {
         continue
       }
       groupBuilder.addSubcommand(builder)
-      needRegister = true
+      isNeedRegister = true
     }
-    if (!needRegister) {
+    if (!isNeedRegister) {
       return null
     }
     return groupBuilder
@@ -177,8 +177,8 @@ export class SetChannelCommand implements BaseCommand {
       }
     }
 
-    const channel = server.setChannel(channelType, targetChannel)
-    if (!channel) {
+    const isChannel = server.setChannel(channelType, targetChannel)
+    if (!isChannel) {
       await interaction.editReply({
         embeds: [
           {

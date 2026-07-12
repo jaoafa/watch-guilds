@@ -1,12 +1,12 @@
 import { Logger } from '@book000/node-utils'
 import { Discord } from './discord'
-import { WGConfiguration } from './config'
+import { WGConfig } from './config'
 
 function main() {
   const logger = Logger.configure('main')
   logger.info('🚀 Starting...')
 
-  const config = new WGConfiguration('data/config.json')
+  const config = new WGConfig('data/config.json')
   config.load()
   if (!config.validate()) {
     logger.error('❌ Configuration is invalid')
@@ -19,16 +19,16 @@ function main() {
 
   const discord = new Discord(config)
   process.once('SIGINT', () => {
-    logger.info('👋 SIGINT signal received.')
-    discord
-      .close()
-      .then(() => {
+    ;(async () => {
+      logger.info('👋 SIGINT signal received.')
+      try {
+        await discord.close()
         process.exit(0)
-      })
-      .catch((error: unknown) => {
+      } catch (error) {
         logger.error('❌ Failed to close Discord client', error as Error)
         process.exit(1)
-      })
+      }
+    })()
   })
 }
 
