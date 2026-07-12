@@ -11,9 +11,7 @@ import { Logger } from '@book000/node-utils'
 
 export class UpdateCommand implements BaseCommand {
   definition():
-    | SlashCommandSubcommandBuilder
-    | SlashCommandSubcommandGroupBuilder
-    | null {
+    SlashCommandSubcommandBuilder | SlashCommandSubcommandGroupBuilder | null {
     return new SlashCommandSubcommandBuilder()
       .setName('update-commands')
       .setDescription('このサーバのコマンドを更新します。')

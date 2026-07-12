@@ -12,9 +12,7 @@ import { ListEmojis } from '@/list-emojis'
 
 export class RegenerateCommand implements BaseCommand {
   definition():
-    | SlashCommandSubcommandBuilder
-    | SlashCommandSubcommandGroupBuilder
-    | null {
+    SlashCommandSubcommandBuilder | SlashCommandSubcommandGroupBuilder | null {
     return new SlashCommandSubcommandBuilder()
       .setName('regenerate')
       .setDescription('絵文字一覧を再生成します。')
