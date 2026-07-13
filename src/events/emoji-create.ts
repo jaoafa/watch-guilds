@@ -11,12 +11,12 @@ export class DiscordEmojiCreateEvent extends BaseDiscordEvent {
   readonly eventName = 'emojiCreate'
 
   async execute(emoji: GuildEmoji) {
-    const logger = Logger.configure('Discord.onEmojiCreate')
-    const guild = emoji.guild
     if (!emoji.name) {
       throw new Error('Emoji has no name')
     }
 
+    const logger = Logger.configure('Discord.onEmojiCreate')
+    const guild = emoji.guild
     const server = new WatchGuildServer(guild)
     const channelId = server.getChannelId('notifier-emoji')
     if (!server.isRegistered()) {

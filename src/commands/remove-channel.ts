@@ -101,10 +101,6 @@ export class RemoveChannelCommand implements BaseCommand {
       })
       return
     }
-    const logger = Logger.configure(
-      this.constructor.name + '.executeRemoveChannel'
-    )
-
     if (server.getChannelId(type) === null) {
       await interaction.editReply({
         embeds: [
@@ -134,6 +130,9 @@ export class RemoveChannelCommand implements BaseCommand {
       return
     }
 
+    const logger = Logger.configure(
+      this.constructor.name + '.executeRemoveChannel'
+    )
     logger.info(`✅ Channel removed: ${interaction.guildId} -> ${type}`)
     await interaction.editReply({
       embeds: [

@@ -10,12 +10,12 @@ export class DiscordEmojiUpdateEvent extends BaseDiscordEvent {
   readonly eventName = 'emojiUpdate'
 
   async execute(oldEmoji: GuildEmoji, newEmoji: GuildEmoji) {
-    const logger = Logger.configure('Discord.onEmojiUpdate')
-    const guild = oldEmoji.guild
     if (!newEmoji.name) {
       throw new Error('Emoji has no name')
     }
 
+    const logger = Logger.configure('Discord.onEmojiUpdate')
+    const guild = oldEmoji.guild
     const server = new WatchGuildServer(guild)
     const channelId = server.getChannelId('notifier-emoji')
     if (!server.isRegistered()) {
