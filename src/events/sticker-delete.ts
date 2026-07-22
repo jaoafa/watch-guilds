@@ -14,7 +14,7 @@ export class DiscordStickerDeleteEvent extends BaseDiscordEvent {
 
     const server = new WatchGuildServer(guild)
     const channelId = server.getChannelId('notifier-sticker')
-    if (!server.isRegistered() || channelId === null) {
+    if (channelId === null || !server.isRegistered()) {
       return
     }
     const channel = guild.channels.cache.get(channelId)
