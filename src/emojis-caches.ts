@@ -54,11 +54,9 @@ export class EmojisCache {
 
   public static get(guildId: string): EmojisCacheFile | null {
     const path = this.getFilePath(guildId)
-    if (!fs.existsSync(path)) {
-      return null
-    }
-
-    return JSON.parse(fs.readFileSync(path, 'utf8')) as EmojisCacheFile
+    return fs.existsSync(path)
+      ? (JSON.parse(fs.readFileSync(path, 'utf8')) as EmojisCacheFile)
+      : null
   }
 
   static async refresh(guild: Guild) {

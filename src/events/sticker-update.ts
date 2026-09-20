@@ -93,8 +93,7 @@ export class DiscordStickerUpdateEvent extends BaseDiscordEvent {
   getUpdateType(oldSticker: Sticker, newSticker: Sticker): string {
     if (oldSticker.name !== newSticker.name) return 'Name'
     if (oldSticker.description !== newSticker.description) return 'Description'
-    if (oldSticker.tags !== newSticker.tags) return 'Tags'
-    return 'NULL'
+    return oldSticker.tags === newSticker.tags ? 'NULL' : 'Tags'
   }
 
   getValue(sticker: Sticker, type: string): string {
@@ -116,7 +115,6 @@ export class DiscordStickerUpdateEvent extends BaseDiscordEvent {
 
   quoted(value: string): string {
     if (value.length === 0) return ''
-    if (value.includes('\n')) return `\`\`\`\n${value}\n\`\`\``
-    return `\`${value}\``
+    return value.includes('\n') ? `\`\`\`\n${value}\n\`\`\`` : `\`${value}\``
   }
 }
