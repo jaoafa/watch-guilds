@@ -43,10 +43,7 @@ export class SetChannelCommand implements BaseCommand {
       groupBuilder.addSubcommand(builder)
       needRegister = true
     }
-    if (!needRegister) {
-      return null
-    }
-    return groupBuilder
+    return needRegister ? groupBuilder : null
   }
 
   conditions(guild: BaseGuild): boolean {

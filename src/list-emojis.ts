@@ -92,8 +92,7 @@ export class ListEmojis {
     )
     await Promise.all(
       deleteMessages.map(async (message) => {
-        if (!message) return
-        return await message.delete().catch(() => null)
+        return message ? await message.delete().catch(() => null) : undefined
       })
     )
 
@@ -133,8 +132,7 @@ export class ListEmojis {
 
     await Promise.all(
       messages.map((message) => {
-        if (!message) return Promise.resolve()
-        return message.delete().catch(() => null)
+        return message ? message.delete().catch(() => null) : Promise.resolve()
       })
     )
     return true
@@ -181,9 +179,7 @@ export class ListEmojis {
       .toArray()
       .toSorted((a, b) => {
         if (!a.name) return 0
-        if (!b.name) return 0
-
-        return sorter(a.name, b.name)
+        return b.name ? sorter(a.name, b.name) : 0
       })
       .map((emoji) => {
         return `${mentionEmoji(emoji)} = \`${emoji.name}\``
