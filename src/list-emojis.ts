@@ -16,6 +16,7 @@ export class ListEmojis {
   private readonly discord: Discord
   private readonly baseDirectory: string
   private readonly MESSAGE_LIMIT = 1900
+  private static readonly queues = new Map<string, Promise<void>>()
 
   constructor(discord: Discord) {
     this.discord = discord
@@ -37,7 +38,31 @@ export class ListEmojis {
     }
   }
 
+  /**
+   * Regenerates the emoji list of the guild. Calls for the same guild run
+   * one at a time in call order; different guilds run in parallel.
+   *
+   * @param baseGuild guild to regenerate the list for
+   */
   public async generate(baseGuild: BaseGuild) {
+    const previous = ListEmojis.queues.get(baseGuild.id) ?? Promise.resolve()
+    const current = previous.then(() => this.generateUnlocked(baseGuild))
+    // A failed run must not block later runs; the caller still gets the error via `current`.
+    const tail = current.then(
+      () => undefined,
+      () => undefined
+    )
+    ListEmojis.queues.set(baseGuild.id, tail)
+    try {
+      await current
+    } finally {
+      if (ListEmojis.queues.get(baseGuild.id) === tail) {
+        ListEmojis.queues.delete(baseGuild.id)
+      }
+    }
+  }
+
+  private async generateUnlocked(baseGuild: BaseGuild) {
     const logger = Logger.configure('ListEmojis.generate')
     const guild = await baseGuild.fetch()
 
