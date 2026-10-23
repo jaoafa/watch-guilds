@@ -16,6 +16,7 @@ export class ListEmojis {
   private readonly discord: Discord
   private readonly baseDirectory: string
   private readonly MESSAGE_LIMIT = 1900
+  private static readonly queues = new Map<string, Promise<void>>()
 
   constructor(discord: Discord) {
     this.discord = discord
@@ -37,7 +38,31 @@ export class ListEmojis {
     }
   }
 
+  /**
+   * ギルドの絵文字一覧を再生成する。同一ギルドの呼び出しは呼び出し順に1件ずつ実行し、
+   * 異なるギルドは並行して実行する。
+   *
+   * @param baseGuild 一覧を再生成するギルド
+   */
   public async generate(baseGuild: BaseGuild) {
+    const previous = ListEmojis.queues.get(baseGuild.id) ?? Promise.resolve()
+    const current = previous.then(() => this.generateUnlocked(baseGuild))
+    // 失敗した実行が後続をブロックしないようエラーは握りつぶす。呼び出し元には `current` 経由で届く
+    const tail = current.then(
+      () => undefined,
+      () => undefined
+    )
+    ListEmojis.queues.set(baseGuild.id, tail)
+    try {
+      await current
+    } finally {
+      if (ListEmojis.queues.get(baseGuild.id) === tail) {
+        ListEmojis.queues.delete(baseGuild.id)
+      }
+    }
+  }
+
+  private async generateUnlocked(baseGuild: BaseGuild) {
     const logger = Logger.configure('ListEmojis.generate')
     const guild = await baseGuild.fetch()
 
