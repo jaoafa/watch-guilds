@@ -39,15 +39,15 @@ export class ListEmojis {
   }
 
   /**
-   * Regenerates the emoji list of the guild. Calls for the same guild run
-   * one at a time in call order; different guilds run in parallel.
+   * ギルドの絵文字一覧を再生成する。同一ギルドの呼び出しは呼び出し順に1件ずつ実行し、
+   * 異なるギルドは並行して実行する。
    *
-   * @param baseGuild guild to regenerate the list for
+   * @param baseGuild 一覧を再生成するギルド
    */
   public async generate(baseGuild: BaseGuild) {
     const previous = ListEmojis.queues.get(baseGuild.id) ?? Promise.resolve()
     const current = previous.then(() => this.generateUnlocked(baseGuild))
-    // A failed run must not block later runs; the caller still gets the error via `current`.
+    // 失敗した実行が後続をブロックしないようエラーは握りつぶす。呼び出し元には `current` 経由で届く
     const tail = current.then(
       () => undefined,
       () => undefined
