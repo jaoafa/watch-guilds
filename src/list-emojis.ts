@@ -134,11 +134,7 @@ export class ListEmojis {
     for (let i = 0; i < contents.length; i++) {
       const content = contents[i]
       const message = messages.length > i ? messages[i] : null
-      if (message) {
-        promises.push(message.edit(content))
-      } else {
-        promises.push(channel.send(content))
-      }
+      promises.push(message ? message.edit(content) : channel.send(content))
     }
     return await Promise.all(promises)
   }
