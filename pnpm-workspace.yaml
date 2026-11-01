@@ -1,4 +1,6 @@
 allowBuilds:
   esbuild: true
+overrides:
+  '@sapphire/shapeshift': 5.0.0
 minimumReleaseAgeExclude:
   - '@book000/*'
