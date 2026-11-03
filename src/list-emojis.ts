@@ -218,7 +218,6 @@ export class ListEmojis {
     }
     result.push(current)
 
-    // 空の要素を除く
     return result.filter((text) => text.length > 0)
   }
 }
