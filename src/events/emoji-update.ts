@@ -92,7 +92,6 @@ export class DiscordEmojiUpdateEvent extends BaseDiscordEvent {
       const executor = log.executor
       if (!executor) continue
 
-      // is Partial User
       user = executor.partial ? await executor.fetch() : executor
       break
     }

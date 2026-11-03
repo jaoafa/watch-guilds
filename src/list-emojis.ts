@@ -140,13 +140,12 @@ export class ListEmojis {
   }
 
   /**
-   * メッセージが一つでも削除されている場合、すべてのメッセージを削除する
+   * メッセージが一つでも削除されている場合、残りのメッセージもすべて削除する
    *
-   * @param channel チャンネル
-   * @param messageIds メッセージID
+   * @param messages 一覧メッセージ。削除済みのものは null
+   * @returns 削除を行った場合は true
    */
   private async deleteMessagesIfAlreadyDeleted(messages: (Message | null)[]) {
-    // 一つでもメッセージが存在しなかったら、すべてのメッセージを削除する
     if (messages.every(Boolean)) {
       return false
     }
@@ -219,7 +218,6 @@ export class ListEmojis {
     }
     result.push(current)
 
-    // 空白配列を削除する
     return result.filter((text) => text.length > 0)
   }
 }
