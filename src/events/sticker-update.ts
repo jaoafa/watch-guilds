@@ -82,7 +82,7 @@ export class DiscordStickerUpdateEvent extends BaseDiscordEvent {
       const executor = log.executor
       if (!executor) continue
 
-      // is Partial User
+      // Partial の場合は取得し直す
       user = executor.partial ? await executor.fetch() : executor
       break
     }

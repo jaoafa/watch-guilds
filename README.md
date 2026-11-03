@@ -1,41 +1,62 @@
 # watch-guilds
 
-Monitoring of emojis, stickers, etc. on the Discord guilds and listing or notifying them in a text channel.
+Discord サーバの絵文字やステッカーなどを監視し、テキストチャンネルに一覧の投稿や変更の通知を行う Bot です。
 
-## Features
+## 機能
 
-- **List emojis**: Automatic posting of messages in text channels with a glance at the emoji on that server.
-- **Notifier emoji**: Post a notification message when a emoji is added, updated or deleted.
-- **Notifier sticker**: Post a notification message when a sticker is added, updated or deleted.
-- Human-like emoji sorting using natural order algorithmic sorting (natsort).
-- Authority checks during configuration to prevent human error.
-- The display language is Japanese only.
+- **絵文字一覧**: サーバの絵文字を一覧にしたメッセージをテキストチャンネルへ自動で投稿します。
+- **絵文字の通知**: 絵文字が追加・更新・削除されたときに通知メッセージを投稿します。
+- **ステッカーの通知**: ステッカーが追加・更新・削除されたときに通知メッセージを投稿します。
+- 絵文字は自然順ソート (natsort) で人間が読みやすい順に並べます。
+- 設定時に Bot の権限を確認し、設定ミスを防ぎます。
+- 表示言語は日本語のみです。
 
-## Installation
+## インストール
 
-### Install application
+### アプリケーションの起動
 
-...
+Node.js (バージョンは [.node-version](.node-version) を参照) と pnpm が必要です。
 
-## Register Bot and Join the server
+1. `data/config.json` を作成し、Bot のトークンを記述します。設定ファイルの形式は [schema/Configuration.json](schema/Configuration.json) を参照してください。
 
-...
+   ```json
+   {
+     "discord": {
+       "token": "Bot のトークン"
+     }
+   }
+   ```
 
-### Bot Permission
+2. 依存関係をインストールして起動します。
 
-The following permissions must be granted for the Bot as a server:
+   ```bash
+   pnpm install
+   pnpm start
+   ```
 
-- Manage emojis and stickers
-- View Audit log
+Docker で動かす場合は、`./data` を `/data` にマウントして `docker compose up -d --build` を実行します。この場合の設定ファイルは `data/config.json` です。サーバごとの設定や絵文字一覧のデータも `data` ディレクトリ以下に保存されます。
 
-In addition, the following permissions must also be granted to the Bot on the channel you set as the posting destination:
+### Bot の登録とサーバへの招待
 
-- View channel
-- Send messages
-- Embed links
-- Read messages history
+[Discord Developer Portal](https://discord.com/developers/applications) でアプリケーションを作成し、Bot のトークンを発行します。招待 URL には `bot` と `applications.commands` のスコープを指定して、Bot をサーバに招待してください。
 
-### Register commands
+### Bot の権限
+
+サーバに対して、Bot に次の権限が必要です。
+
+- 絵文字とステッカーの管理
+- 監査ログの表示
+
+投稿先に設定するチャンネルでは、さらに次の権限が必要です。
+
+- チャンネルを見る
+- メッセージを送信
+- 埋め込みリンク
+- メッセージ履歴を読む
+
+### コマンドの登録
+
+「サーバの管理」権限を持つユーザーが、次のコマンドで設定します。
 
 - `/watch-guilds register`
 - `/watch-guilds set-channel list-emoji <ListEmojiChannel>`
@@ -43,6 +64,8 @@ In addition, the following permissions must also be granted to the Bot on the ch
 - `/watch-guilds set-channel notifier-sticker <NotifierStickerChannel>`
 - `/watch-guilds regenerate`
 
-## License
+そのほかに、`unregister` (対象サーバから外す)、`remove-channel` (チャンネル設定の解除)、`check-permissions` (必要な権限の確認) があり、いずれも「サーバの管理」権限が必要です。`update-command` (このサーバのコマンドの更新) は誰でも実行できます。`regenerate` も同様に権限の制限はありません。
 
-The license for this project is [MIT License](LICENSE).
+## ライセンス
+
+このプロジェクトのライセンスは [MIT License](LICENSE) です。
