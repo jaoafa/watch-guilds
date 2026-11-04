@@ -71,7 +71,7 @@ export class CheckPermissionsCommand implements BaseCommand {
 
     const needPerms = {
       ViewAuditLog: '監査ログの表示',
-      ManageEmojisAndStickers: '絵文字の管理',
+      ManageGuildExpressions: '絵文字の管理',
     }
     const permStatus: Record<string, boolean> = {}
     for (const perm of Object.keys(needPerms)) {

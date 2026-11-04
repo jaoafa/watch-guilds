@@ -23,6 +23,9 @@ import { DiscordEmojiDeleteEvent } from './events/emoji-delete'
 import { DiscordStickerCreateEvent } from './events/sticker-create'
 import { DiscordStickerUpdateEvent } from './events/sticker-update'
 import { DiscordStickerDeleteEvent } from './events/sticker-delete'
+import { DiscordSoundboardSoundCreateEvent } from './events/soundboard-sound-create'
+import { DiscordSoundboardSoundUpdateEvent } from './events/soundboard-sound-update'
+import { DiscordSoundboardSoundDeleteEvent } from './events/soundboard-sound-delete'
 import { RegenerateCommand } from './commands/regenerate'
 import { UpdateCommand } from './commands/update-command'
 import { DiscordGuildCreateEvent } from './events/guild-create'
@@ -72,6 +75,9 @@ export class Discord {
       new DiscordStickerCreateEvent(this),
       new DiscordStickerUpdateEvent(this),
       new DiscordStickerDeleteEvent(this),
+      new DiscordSoundboardSoundCreateEvent(this),
+      new DiscordSoundboardSoundUpdateEvent(this),
+      new DiscordSoundboardSoundDeleteEvent(this),
     ]
     for (const event of events) {
       event.register()
