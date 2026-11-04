@@ -44,7 +44,7 @@ Docker で動かす場合は、`./data` を `/data` にマウントして `docke
 
 サーバに対して、Bot に次の権限が必要です。
 
-- 絵文字とステッカーの管理
+- 表現の管理
 - 監査ログの表示
 
 投稿先に設定するチャンネルでは、さらに次の権限が必要です。
@@ -62,6 +62,7 @@ Docker で動かす場合は、`./data` を `/data` にマウントして `docke
 - `/watch-guilds set-channel list-emoji <ListEmojiChannel>`
 - `/watch-guilds set-channel notifier-emoji <NotifierEmojiChannel>`
 - `/watch-guilds set-channel notifier-sticker <NotifierStickerChannel>`
+- `/watch-guilds set-channel notifier-sound-board <NotifierSoundBoardChannel>`
 - `/watch-guilds regenerate`
 
 そのほかに、`unregister` (対象サーバから外す)、`remove-channel` (チャンネル設定の解除)、`check-permissions` (必要な権限の確認) があり、いずれも「サーバの管理」権限が必要です。`update-commands` (このサーバのコマンドの更新) と `regenerate` は権限の制限がなく、誰でも実行できます。なお、各コマンドは状態に応じて表示されます。`register` は未登録のサーバでのみ、`unregister`・`set-channel`・`remove-channel`・`update-commands` は登録済みのサーバでのみ使えます。`regenerate` は `list-emoji` のチャンネルを設定した後に使えます。
